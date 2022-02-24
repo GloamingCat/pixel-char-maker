@@ -6,6 +6,10 @@ img {
     image-rendering: pixelated;
 }
 
+canvas {
+    image-rendering: pixelated;
+}
+
 .folder {
     display: none;
 }

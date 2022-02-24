@@ -3,15 +3,32 @@
 
 var folderButtons = document.getElementById('folderButtons');
 var folderStack = document.getElementById('folderStack');
-var palettes = document.getElementById('palettes');
-
-palettes.addEventListener('click', function(event) {
-    var p = event.layerX / 10;
-    if (selectedLayer != -1) {
-        layers[selectedLayer].palette = p;
-        redrawCanvas();
-    }
+var paletteButton = document.getElementById('palettes');
+paletteButton.addEventListener('click', function(e) {
+    var rect = e.target.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    selectPalette(Math.round(x / 10));
 });
+paletteImg = new Image();
+paletteImg.src = "palettes.png";
+paletteImg.onload = function() {
+    let canvas = document.createElement('canvas');
+    canvas.width = paletteImg.width;
+    canvas.height = paletteImg.height;
+    let ctx =  canvas.getContext('2d');
+    ctx.drawImage(paletteImg, 0, 0);
+    let imgData = ctx.getImageData(0, 0, paletteImg.width, paletteImg.height);
+    for (i = 0; i < paletteImg.width; i++) {
+        var palette = []
+        for (j = 0; j < paletteImg.height; j++) {
+            let k = (j * paletteImg.width + i)*4;
+            palette.push([imgData.data[k], imgData.data[k + 1], imgData.data[k + 2]]);
+        }
+        palettes.push(palette);
+    }
+    paletteButton.width = paletteImg.width * 10;
+    paletteButton.height = paletteImg.height * 10;
+};
 
 function addCloth(name, path, folderDiv) {
     const img = new Image();
@@ -53,8 +70,6 @@ xmlhttp.onload = function() {
     var settings = JSON.parse(this.responseText);
     canvas.width = settings.width;
     canvas.height = settings.height;
-    palettes.width = settings.nPalettes * 10;
-    palettes.height = settings.nTones * 10;
     const path = 'templates/' + settings.template + '/'
     for (f in settings.folders) {
         addFolder(settings.folders[f], path);

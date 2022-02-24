@@ -20,6 +20,13 @@ function selectFolder(folderDiv) {
     selectedFolder.className = 'selectedfolder';
 }
 
+function selectPalette(p) {
+    if (selectedLayer != -1) {
+        layers[selectedLayer].setPalette(0, p);
+        redrawCanvas();
+    }
+}
+
 function selectLayer(layer) {
     if (layer == null) {
         selectedLayer = -1;
