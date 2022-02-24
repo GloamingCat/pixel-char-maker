@@ -7,11 +7,10 @@ var paletteButton = document.getElementById('palettes');
 paletteButton.addEventListener('click', function(e) {
     var rect = e.target.getBoundingClientRect();
     var x = e.clientX - rect.left;
-    selectPalette(Math.round(x / 10));
+    selectPalette(Math.floor(x / 10));
 });
-paletteImg = new Image();
-paletteImg.src = "palettes.png";
-paletteImg.onload = function() {
+
+function loadPalettes(paletteImg) {
     let canvas = document.createElement('canvas');
     canvas.width = paletteImg.width;
     canvas.height = paletteImg.height;
@@ -25,6 +24,7 @@ paletteImg.onload = function() {
             palette.push([imgData.data[k], imgData.data[k + 1], imgData.data[k + 2]]);
         }
         palettes.push(palette);
+        console.log(palette);
     }
     paletteButton.width = paletteImg.width * 10;
     paletteButton.height = paletteImg.height * 10;
@@ -40,6 +40,13 @@ function addCloth(name, path, folderDiv) {
     cloth.addEventListener('click', function(event) {
         selectCloth(cloth, img);
     });
+    cloth.onload = function() {
+        console.log(name);
+        colorLists.set(img, createColorList(img));
+        if (name == 'Body') {
+            setColorIds(img);
+        }
+    }
     folderDiv.append(cloth);
     return img;
 }
@@ -70,11 +77,16 @@ xmlhttp.onload = function() {
     var settings = JSON.parse(this.responseText);
     canvas.width = settings.width;
     canvas.height = settings.height;
-    const path = 'templates/' + settings.template + '/'
-    for (f in settings.folders) {
-        addFolder(settings.folders[f], path);
+    paletteImg = new Image();
+    paletteImg.src = settings.paletteFile;
+    paletteImg.onload = function() {
+        loadPalettes(paletteImg);
+        const path = 'templates/' + settings.template + '/'
+        for (f in settings.folders) {
+            addFolder(settings.folders[f], path);
+        }
+        addLayer();
     }
-    addLayer();
 };
 xmlhttp.open("GET", "settings.json");
 xmlhttp.send();

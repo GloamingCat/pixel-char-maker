@@ -1,6 +1,26 @@
 
+var colorIds = document.getElementById('colorIds');
+var selectedColor = 0;
 var canvas = document.getElementById('spritesheet');
 var ctx = canvas.getContext('2d');
+
+function setColorIds(img) {
+    if (!colorLists.has(img))
+        return;
+    let n = colorLists.get(img).length;
+    console.log("n" + n);
+    colorIds.innerHTML = '';
+    for (i = 0; i < n; i++) {
+        let option = document.createElement('option');
+        option.innerHTML = 'Color ' + (i + 1);
+        option.value = i;
+        const value = i;
+        addEventListener('change', function(event) {
+            selectedColor = value;
+        });
+        colorIds.append(option);
+    }
+}
 
 var selectedCloth = null;
 function selectCloth(element, img) {
@@ -9,6 +29,7 @@ function selectCloth(element, img) {
     }
     selectedCloth = [element, img];
     element.className = 'selectedcloth';
+    setColorIds(img);
 }
 
 var selectedFolder = null;
@@ -22,7 +43,7 @@ function selectFolder(folderDiv) {
 
 function selectPalette(p) {
     if (selectedLayer != -1) {
-        layers[selectedLayer].setPalette(0, p);
+        layers[selectedLayer].setPalette(selectedColor, p);
         redrawCanvas();
     }
 }

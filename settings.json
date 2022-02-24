@@ -19,6 +19,7 @@
             ]
         }
     ],
+    "paletteFile": "palettes.png",
     "nPalettes": 16,
     "nTones": 5
 }

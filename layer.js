@@ -62,9 +62,6 @@ class Layer {
     }
 
     setPalette(colorId, paletteId) {
-        if (!colorLists.has(this.img)) {
-            colorLists.set(this.img, createColorList(this.img));
-        }
         let oldPalette = palettes[colorLists.get(this.img)[colorId]];
         let newPalette = palettes[paletteId];
         for (i in oldPalette) {
