@@ -4,31 +4,42 @@
     </head>
     <body>
 
-        <div id="folders">
-            <div class="row" id="folderButtons"></div>
-            <div class="row" id="folderStack"></div>
-        </div>
+        <div class="row">
 
-        <div class="row" id="layers">
-            <select id="layerSelector" multiple size="8"></select>
-            <div id="layerButtons">
-                <button onclick="addLayer()">Add layer</button><br>
-                <button onclick="deleteLayer()">Delete layer</button><br>
-                <button onclick="moveLayerUp()">Move Up</button><br>
-                <button onclick="moveLayerDown()">Move Down</button><br>
-                <button onclick="moveLayerTop()">Move to Top</button><br>
-                <button onclick="moveLayerBottom()">Move to Bottom</button><br>
+            <div>
+                Folders:<br>
+                <div class="row" id="folderButtons"></div>
+                <div class="row" id="folderStack"></div>
             </div>
+            
+            <div>
+                Layers:<br>
+                <div class="row" id="layers">
+                    <select id="layerSelector" multiple size="8"></select>
+                    <div id="layerButtons">
+                        <button onclick="addLayer()"><img src="new.png"></button>
+                        <button onclick="deleteLayer()"><img src="delete.png"></button><br>
+                        <button onclick="moveLayerUp()"><img src="up.png"></button>
+                        <button onclick="moveLayerTop()"><img src="top.png"></button><br>
+                        <button onclick="moveLayerDown()"><img src="down.png"></button>
+                        <button onclick="moveLayerBottom()"><img src="bottom.png"></button><br>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                Colors:<br>
+                <div id="colors">
+                    <select id="colorIds"></select> <br>
+                    <div id="palettes" class="row"></div>
+                </div>
+            </div>
+
         </div>
 
         <div class="row" id="canvas">
             <canvas id="spritesheet"></canvas>
             <canvas id="animation"></canvas>
-        </div>
-
-        <div class="row" id="colors">
-            <select id="colorIds"></select> 
-            <img id="palettes" src="palettes.png" position="relative"></img>
         </div>
 
         <script src="layer.js"></script>

@@ -1,38 +1,14 @@
 
-var colorIds = document.getElementById('colorIds');
+var selectedFolder = null;
+var selectedCloth = null;
 var selectedColor = 0;
+var selectedPalette = null;
+
+var colorIds = document.getElementById('colorIds');
 var canvas = document.getElementById('spritesheet');
 var ctx = canvas.getContext('2d');
 
-function setColorIds(img) {
-    if (!colorLists.has(img))
-        return;
-    let n = colorLists.get(img).length;
-    console.log("n" + n);
-    colorIds.innerHTML = '';
-    for (i = 0; i < n; i++) {
-        let option = document.createElement('option');
-        option.innerHTML = 'Color ' + (i + 1);
-        option.value = i;
-        const value = i;
-        addEventListener('change', function(event) {
-            selectedColor = value;
-        });
-        colorIds.append(option);
-    }
-}
-
-var selectedCloth = null;
-function selectCloth(element, img) {
-    if (selectedCloth != null) {
-        selectedCloth[0].className = 'cloth';
-    }
-    selectedCloth = [element, img];
-    element.className = 'selectedcloth';
-    setColorIds(img);
-}
-
-var selectedFolder = null;
+// Folder of clothes.
 function selectFolder(folderDiv) {
     if (selectedFolder != null) {
         selectedFolder.className = 'folder';
@@ -41,20 +17,64 @@ function selectFolder(folderDiv) {
     selectedFolder.className = 'selectedfolder';
 }
 
-function selectPalette(p) {
-    if (selectedLayer != -1) {
-        layers[selectedLayer].setPalette(selectedColor, p);
-        redrawCanvas();
+// Specific piece of cloth.
+function selectCloth(element, img) {
+    if (selectedCloth != null) {
+        selectedCloth[0].className = 'cloth';
     }
+    selectedCloth = [element, img];
+    element.className = 'selectedcloth';
 }
 
+// Layer list.
 function selectLayer(layer) {
     if (layer == null) {
         selectedLayer = -1;
+        refreshColorIds(null);
     } else {
         layerSelector.value = layer.option.value;
         selectedLayer = layer.id;
-        console.log('Selected ' + layer.option.value + " " + layer.id);
+        refreshColorIds(layer.img);
+    }
+    if (selectedPalette != null) {
+        selectedPalette.className = 'color'
+    }
+}
+
+// Refresh the list of colors of selected cloth.
+function refreshColorIds(img) {
+    colorIds.innerHTML = '';
+    if (img == null || !colorLists.has(img))
+        return;
+    let n = colorLists.get(img).length;
+    colorIds.innerHTML = '';
+    for (i = 0; i < n; i++) {
+        let option = document.createElement('option');
+        option.innerHTML = 'Color ' + (i + 1);
+        option.value = i;
+        colorIds.addEventListener('change', function(event) {
+            selectedColor = event.target.value;
+            if (selectedPalette != null) {
+                selectedPalette.className = 'color'
+            }
+        });
+        colorIds.append(option);
+    }
+    if (selectedPalette != null) {
+        selectedPalette.className = 'color'
+    }
+}
+
+// Color buttons.
+function selectPalette(p, button) {
+    if (selectedLayer != -1) {
+        layers[selectedLayer].setPalette(selectedColor, p);
+        redrawCanvas();
+        if (selectedPalette != null) {
+            selectedPalette.className = 'color';
+        }
+        selectedPalette = button;
+        button.className = 'selectedcolor';
     }
 }
 

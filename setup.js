@@ -3,12 +3,7 @@
 
 var folderButtons = document.getElementById('folderButtons');
 var folderStack = document.getElementById('folderStack');
-var paletteButton = document.getElementById('palettes');
-paletteButton.addEventListener('click', function(e) {
-    var rect = e.target.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    selectPalette(Math.floor(x / 10));
-});
+var paletteButtons = document.getElementById('palettes');
 
 function loadPalettes(paletteImg) {
     let canvas = document.createElement('canvas');
@@ -24,10 +19,18 @@ function loadPalettes(paletteImg) {
             palette.push([imgData.data[k], imgData.data[k + 1], imgData.data[k + 2]]);
         }
         palettes.push(palette);
+        const p = i;
+        const button = document.createElement('img');
+        let middle = palette[Math.ceil(palette.length / 2)];
+        button.className = 'color';
+        button.style.backgroundColor = 'rgb(' + middle.join(',') + ')';
+        button.addEventListener('click', function(event) {
+            selectPalette(p, button);
+        });
+        paletteButtons.append(button);
+        //if (i%6 == 5) paletteButtons.innerHTML += "<br>";
         console.log(palette);
     }
-    paletteButton.width = paletteImg.width * 10;
-    paletteButton.height = paletteImg.height * 10;
 };
 
 function addCloth(name, path, folderDiv) {
@@ -44,7 +47,7 @@ function addCloth(name, path, folderDiv) {
         console.log(name);
         colorLists.set(img, createColorList(img));
         if (name == 'Body') {
-            setColorIds(img);
+            refreshColorIds(img);
         }
     }
     folderDiv.append(cloth);

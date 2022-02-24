@@ -30,3 +30,19 @@ canvas {
     display: flex;
     flex-direction: row;
 }
+
+.color {
+    width:24px;
+    height:24px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: lightblue;
+}
+
+.selectedcolor {
+    width:24px;
+    height:24px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+}
