@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+
+        <div class="row" id="clothes"></div>
+
+        <div class="row" id="layers">
+            <select id="layerSelector" multiple size="8"></select>
+            <div id="layerButtons">
+                <button onclick="addLayer()">Add layer</button><br>
+                <button onclick="deleteLayer()">Delete layer</button><br>
+                <button onclick="moveLayerUp()">Move Up</button><br>
+                <button onclick="moveLayerDown()">Move Down</button><br>
+                <button onclick="moveLayerTop()">Move to Top</button><br>
+                <button onclick="moveLayerBottom()">Move to Bottom</button><br>
+            </div>
+        </div>
+
+        <div class="row" id="canvas">
+            <canvas id="spritesheet"></canvas>
+            <canvas id="animation"></canvas>
+        </div>
+
+        <div class="row" id = "edit">
+            <img id="palettes" src="palettes.png" width="160" height="50"></img>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
