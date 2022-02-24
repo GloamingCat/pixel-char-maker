@@ -1,0 +1,24 @@
+{
+    "template": "lth",
+    "rows": 8,
+    "cols": 3,
+    "width": 72,
+    "height": 256,
+    "folders": [
+        {
+            "name": "Body",
+            "clothes": [
+                "Body"
+            ]
+        },
+        {
+            "name": "Clothes",
+            "clothes": [
+                "Dress",
+                "Tum-Tum"
+            ]
+        }
+    ],
+    "nPalettes": 16,
+    "nTones": 5
+}

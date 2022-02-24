@@ -1,33 +1,16 @@
 
-var settings = {};
-settings.template = 'lth';
-settings.bodyFile = 'Body';
-settings.rows = 8;
-settings.cols = 3;
-settings.width = 72;
-settings.height = 256;
-settings.clothes = [
-    'Dress',
-    'Tum-Tum'
-];
-settings.nPalettes = 16;
-settings.nTones = 5;
-
 // Elements
 
-var clothSelector = document.getElementById('clothes');
+var folderButtons = document.getElementById('folderButtons');
+var folderStack = document.getElementById('folderStack');
 var layerSelector = document.getElementById('layerSelector');
 var palettes = document.getElementById('palettes');
 var canvas = document.getElementById('spritesheet');
 var anim = document.getElementById('animation');
 var ctx = canvas.getContext('2d');
 var ctxa = canvas.getContext('2d');
-canvas.width = settings.width;
-canvas.height = settings.height;
-anim.width = settings.width / settings.cols;
-anim.height = settings.height / settings.rows;
-palettes.width = settings.nPalettes * 10;
-palettes.height = settings.nTones * 10;
+
+var settings = null;
 
 // Layers
 
@@ -122,7 +105,16 @@ function selectCloth(element, img) {
         selectedCloth[0].className = 'cloth';
     }
     selectedCloth = [element, img];
-    element.className = 'selectedCloth';
+    element.className = 'selectedcloth';
+}
+
+var selectedFolder = null;
+function selectFolder(folderDiv) {
+    if (selectedFolder != null) {
+        selectedFolder.className = 'folder';
+    }
+    selectedFolder = folderDiv;
+    selectedFolder.className = 'selectedfolder';
 }
 
 
@@ -189,7 +181,7 @@ function moveLayerDown() {
         if (selectedLayer > 0)  {
             layers[selectedLayer].moveDown();
             selectLayer(layers[selectedLayer - 1]);
-            redrawCanvas();
+            redrawCanvas(); 
         } else {
             console.log('Cannot more bottom layer down.');
         }
@@ -228,29 +220,58 @@ palettes.addEventListener('click', function(event) {
 });
 
 
-// Initial state
+// Setup
 
-function addCloth(name) {
-    let img = new Image();
+function addCloth(name, folderDiv) {
+    const img = new Image();
     img.src = 'templates/' + settings.template + '/' + name + '.png';
-    let cloth = document.createElement('img');
+    const cloth = document.createElement('img');
     cloth.src = img.src;
     cloth.className = 'cloth'
     cloth.id = name;
     cloth.addEventListener('click', function(event) {
         selectCloth(cloth, img);
     });
-    clothSelector.append(cloth);
+    folderDiv.append(cloth);
     return img;
 }
 
-let bodyImg = addCloth(settings.bodyFile);
-selectCloth(clothSelector.firstElementChild, bodyImg);
-for (i in settings.clothes) {
-    addCloth(settings.clothes[i]);
+function addFolder(folder) {
+    const folderDiv = document.createElement('div');
+    folderDiv.className = 'folder';
+    folderStack.append(folderDiv);
+    const folderButton = document.createElement('button');
+    folderButton.innerHTML = folder.name;
+    folderButton.addEventListener('click', function(event) {
+        selectFolder(folderDiv);
+    });
+    folderButtons.append(folderButton);
+    for (i in folder.clothes) {
+        let clothImg = addCloth(folder.clothes[i], folderDiv);
+        if (folder.name == 'Body' && i == 0) {
+            clothImg.onload = redrawCanvas;
+            selectFolder(folderDiv);
+            selectCloth(folderDiv.firstElementChild, clothImg);
+        }
+    }
+    return folderDiv;
 }
-addLayer();
 
-window.onload = function() {
-    redrawCanvas();
-}
+const xmlhttp = new XMLHttpRequest();
+xmlhttp.onload = function() {
+    settings = JSON.parse(this.responseText);
+    canvas.width = settings.width;
+    canvas.height = settings.height;
+    anim.width = settings.width / settings.cols;
+    anim.height = settings.height / settings.rows;
+    palettes.width = settings.nPalettes * 10;
+    palettes.height = settings.nTones * 10;
+    for (f in settings.folders) {
+        addFolder(settings.folders[f]);
+    }
+    
+    addLayer();
+};
+xmlhttp.open("GET", "settings.json");
+xmlhttp.send();
+

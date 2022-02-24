@@ -6,8 +6,12 @@ img {
     image-rendering: pixelated;
 }
 
-.layer {
-    position: absolute;
+.folder {
+    display: none;
+}
+
+.selectedfolder {
+    display: flex;
 }
 
 .cloth {
