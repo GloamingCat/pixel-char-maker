@@ -21,7 +21,6 @@ function loadPalettes(paletteImg) {
             selectPalette(p, button);
         });
         paletteButtons.append(button);
-        console.log(palette);
     }
 };
 
@@ -39,12 +38,12 @@ function findPalette(pixel) {
 
 function createColorList(img) {
     var colorSet = new Set();
-    let clothCanvas = document.createElement('canvas');
-    clothCanvas.width = img.width;
-    clothCanvas.height = img.height;
-    let clothCtx = clothCanvas.getContext('2d');
-    clothCtx.drawImage(img, 0, 0);
-    let imgData = clothCtx.getImageData(0, 0, clothCanvas.width, clothCanvas.height);
+    let paletteCanvas = document.createElement('canvas');
+    paletteCanvas.width = img.width;
+    paletteCanvas.height = img.height;
+    let paletteCtx = paletteCanvas.getContext('2d');
+    paletteCtx.drawImage(img, 0, 0);
+    let imgData = paletteCtx.getImageData(0, 0, paletteCanvas.width, paletteCanvas.height);
     let data = imgData.data;
     for (var i = 0; i < data.length; i += 4) {
         let pixel = [data[i], data[i + 1], data[i + 2]];
@@ -56,24 +55,23 @@ function createColorList(img) {
     return [...colorSet];
 }
 
-function addCloth(name, path, folderDiv) {
+function addAsset(name, path, folderDiv) {
     const img = new Image();
     img.src = path + name + '.png';
-    const cloth = document.createElement('img');
-    cloth.src = img.src;
-    cloth.className = 'cloth'
-    cloth.id = name;
-    cloth.addEventListener('click', function(event) {
-        selectCloth(cloth, img);
+    const asset = document.createElement('img');
+    asset.src = img.src;
+    asset.className = 'asset'
+    asset.id = name;
+    asset.addEventListener('click', function(event) {
+        selectAsset(asset, img);
     });
-    cloth.onload = function() {
-        console.log(name);
+    asset.onload = function() {
         colorLists.set(img, createColorList(img));
         if (name == 'Body') {
             refreshColorSelector(img);
         }
     }
-    folderDiv.append(cloth);
+    folderDiv.append(asset);
     return img;
 }
 
@@ -87,12 +85,12 @@ function addFolder(folder, path) {
         selectFolder(folderDiv);
     });
     folderButtons.append(folderButton);
-    for (i in folder.clothes) {
-        let clothImg = addCloth(folder.clothes[i], path, folderDiv);
+    for (i in folder.assets) {
+        let assetImg = addAsset(folder.assets[i], path, folderDiv);
         if (folder.name == 'Body' && i == 0) {
-            clothImg.onload = redrawCanvas;
+            assetImg.onload = redrawCanvas;
             selectFolder(folderDiv);
-            selectCloth(folderDiv.firstElementChild, clothImg);
+            selectAsset(folderDiv.firstElementChild, assetImg);
         }
     }
     return folderDiv;

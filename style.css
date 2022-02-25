@@ -10,6 +10,16 @@ canvas {
     image-rendering: pixelated;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+}
+
 .grid-container {
     display: grid;
     gap: 4px 4px;
@@ -17,8 +27,9 @@ canvas {
 }
 
 .group {
-    border: 2px;
-    border-color: black;
+    border-width: 2px;
+    border-style: inset;
+    border-color: lightgray;
 }
 
 .folder {
@@ -29,17 +40,16 @@ canvas {
     display: flex;
 }
 
-.cloth {
-    background-color: gray;
+.asset {
+    border-width: 2px;
+    border-style: solid;
+    border-color:lightblue;
 }
 
-.selectedcloth {
-    background-color: white;
-}
-
-.row {
-    display: flex;
-    flex-direction: row;
+.selectedasset {
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
 }
 
 .color {

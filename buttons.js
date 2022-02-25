@@ -7,7 +7,7 @@ function redrawCanvas() {
     }
 }
 
-// Folder of clothes.
+// Folder of assets.
 function selectFolder(folderDiv) {
     if (selectedFolder != null) {
         selectedFolder.className = 'folder';
@@ -16,13 +16,13 @@ function selectFolder(folderDiv) {
     selectedFolder.className = 'selectedfolder';
 }
 
-// Specific piece of cloth.
-function selectCloth(element, img) {
-    if (selectedCloth != null) {
-        selectedCloth[0].className = 'cloth';
+// Specific piece of asset.
+function selectAsset(element, img) {
+    if (selectedAsset != null) {
+        selectedAsset[0].className = 'asset';
     }
-    selectedCloth = [element, img];
-    element.className = 'selectedcloth';
+    selectedAsset = [element, img];
+    element.className = 'selectedAsset';
 }
 
 // Layer list.
@@ -40,12 +40,13 @@ function selectLayer(layer) {
     }
 }
 
-// Refresh the list of colors of selected cloth.
+// Refresh the list of colors of selected asset.
 function refreshColorSelector(img) {
     colorSelector.innerHTML = '';
-    colorSelector.value = 0;
-    if (img == null || !colorLists.has(img))
+    colorSelector.value = '0';
+    if (img == null || !colorLists.has(img)) {
         return;
+    }
     let n = colorLists.get(img).length;
     for (i = 0; i < n; i++) {
         let option = document.createElement('option');
@@ -67,7 +68,6 @@ function refreshColorSelector(img) {
 // Color buttons.
 function selectPalette(p, button) {
     if (selectedLayer != -1) {
-        console.log('Selected palette: ' + p);
         layers[selectedLayer].setPalette(selectedColor, p);
         redrawCanvas();
         if (selectedPalette != null) {
@@ -96,11 +96,11 @@ function resetOffset() {
 }
 
 function addLayer() {
-    if (selectedCloth != null) {
-        selectLayer(new Layer(selectedCloth[0], selectedCloth[1]));
+    if (selectedAsset != null) {
+        selectLayer(new Layer(selectedAsset[0], selectedAsset[1]));
         redrawCanvas();
     } else {
-        console.log('No cloth selected.');
+        console.log('No asset selected.');
     }
 }
 

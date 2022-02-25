@@ -18,7 +18,7 @@ var colorLists = new Map();
 
 var layers = [];
 var selectedFolder = null;
-var selectedCloth = null;
+var selectedAsset = null;
 var selectedLayer = -1;
 var selectedColor = 0;
 var selectedPalette = null;

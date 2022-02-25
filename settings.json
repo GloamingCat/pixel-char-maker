@@ -7,15 +7,28 @@
     "folders": [
         {
             "name": "Body",
-            "clothes": [
+            "assets": [
                 "Body"
             ]
         },
         {
+            "name": "Hair",
+            "assets": [
+                "Tum-Tum",
+                "Blim-Blim",
+                "Pom-Pom"
+            ]
+        },
+        {
             "name": "Clothes",
-            "clothes": [
-                "Dress",
-                "Tum-Tum"
+            "assets": [
+                "Dress"
+            ]
+        },
+        {
+            "name": "Accessories",
+            "assets": [
+                "Hat"
             ]
         }
     ],

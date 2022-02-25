@@ -1,20 +1,21 @@
 
 class Layer {
 
-    constructor(cloth, img) {
+    constructor(asset, img) {
         const layerID = layers.length;
-        console.log('New layer' + layerID + ': ' + cloth.id);
+        console.log('New layer' + layerID + ': ' + asset.id);
         this.id = layerID;
-        this.cloth = cloth;
+        this.asset = asset;
+        this.img = img;
         this.offsetX = 0;
         this.offsetY = 0;
-        this.img = img;
         this.colorMap = new Map();
         this.option = document.createElement('option');
-        this.option.innerHTML = cloth.id;
+        this.option.innerHTML = asset.id;
         this.option.value = '' + this.id;
         this.option.addEventListener('click', function(event) {
             selectedLayer = layerID;
+            refreshColorSelector(img);
         });
         layers.push(this);
         layerSelector.prepend(this.option);
@@ -30,17 +31,17 @@ class Layer {
 
     swap(other) {
         let img = other.img;
-        let cloth = other.cloth;
+        let asset = other.asset;
         let offsetX = other.offsetX;
         let offsetY = other.offsetY;
         let colorMap = other.colorMap;
         other.img = this.img;
-        other.cloth = this.cloth;
+        other.asset = this.asset;
         other.offsetX = this.offsetX;
         other.offsetY = this.offsetY;
         other.colorMap = this.colorMap;
         this.img = img;
-        this.cloth = cloth;
+        this.asset = asset;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.colorMap = colorMap;
@@ -80,15 +81,15 @@ class Layer {
     }
 
     draw(ctx) {
-        let clothCanvas = document.createElement('canvas');
-        clothCanvas.width = this.img.width;
-        clothCanvas.height = this.img.height;
-        let clothCtx = clothCanvas.getContext('2d');
-        clothCtx.drawImage(this.img, 0, 0);
-        let imgData = clothCtx.getImageData(0, 0, clothCanvas.width, clothCanvas.height);
+        let assetCanvas = document.createElement('canvas');
+        assetCanvas.width = this.img.width;
+        assetCanvas.height = this.img.height;
+        let assetCtx = assetCanvas.getContext('2d');
+        assetCtx.drawImage(this.img, 0, 0);
+        let imgData = assetCtx.getImageData(0, 0, assetCanvas.width, assetCanvas.height);
         convertPixels(imgData.data, this.colorMap);
-        clothCtx.putImageData(imgData, 0, 0);
-        ctx.drawImage(clothCanvas, this.offsetX, this.offsetY);
+        assetCtx.putImageData(imgData, 0, 0);
+        ctx.drawImage(assetCanvas, this.offsetX, this.offsetY);
     }
 
 }

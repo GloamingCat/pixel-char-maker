@@ -4,14 +4,16 @@
     </head>
     <body>
 
-        <div class="row">
-
-            <div>
-                Folders:<br>
-                <div class="row" id="folderButtons"></div>
+        <div class="group">
+            <div class="row">
+                <div class="col" id="folderButtons">
+                    Folders:
+                </div>
                 <div class="row" id="folderStack"></div>
             </div>
-            
+        </div>
+
+        <div class="row">   
             <div class="group">
                 Layers:<br>
                 <div class="row" id="layers">
@@ -27,23 +29,26 @@
                 </div>
             </div>
 
-            <div class="group">
-                Colors:<br>
-                <div id="colors">
-                    <select id="colorSelector"></select> <br>
-                    <div id="palettes" class="grid-container"></div>
+            <div class="col">
+                <div class="group">
+                    Colors:<br>
+                    <div id="colors">
+                        <select id="colorSelector"></select> <br>
+                        <div id="palettes" class="grid-container"></div>
+                    </div>
                 </div>
-                Offset:
-                <div class="grid-container">
-                    <div class="grid-item"> </div><button class="grid-item" onclick="increaseOffset(0,-1)">^</button><div class="grid-item"> </div>
-                    <button class="grid-item" onclick="increaseOffset(-1,0)">&lt</button><button class="grid-item" onclick="resetOffset()">0</button><button class="grid-item" onclick="increaseOffset(1,0)">&gt</button>
-                    <div class="grid-item"> </div><button class="grid-item" onclick="increaseOffset(0,1)">v</button><div class="grid-item"> </div>
+                <div class="group">
+                    Offset:
+                    <div class="grid-container">
+                        <div class="grid-item"> </div><button class="grid-item" onclick="increaseOffset(0,-1)">^</button><div class="grid-item"> </div>
+                        <button class="grid-item" onclick="increaseOffset(-1,0)">&lt</button><button class="grid-item" onclick="resetOffset()">0</button><button class="grid-item" onclick="increaseOffset(1,0)">&gt</button>
+                        <div class="grid-item"> </div><button class="grid-item" onclick="increaseOffset(0,1)">v</button><div class="grid-item"> </div>
+                    </div>
                 </div>
             </div>
-
-            <div id="canvas">
+            <div class="group" id="canvas">
+                Preview:<br>
                 <canvas id="spritesheet"></canvas>
-                <canvas id="animation"></canvas>
             </div>
         </div>
 
