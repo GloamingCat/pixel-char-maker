@@ -1,3 +1,11 @@
+
+canvas.addEventListener('click', function(event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    canvasClick(x, y);
+});
+
 function loadPalettes(paletteImg) {
     let canvas = document.createElement('canvas');
     canvas.width = paletteImg.width;

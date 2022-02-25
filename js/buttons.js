@@ -219,3 +219,19 @@ function duplicateLayer() {
         console.log('No layer selected.');
     }
 }
+
+function canvasClick(x, y) {
+    if (selectedLayer != -1) {
+        const w = layers[selectedLayer].asset.img.width / canvas.cols + layers[l].spaceX * 2
+        const h = layers[selectedLayer].asset.img.height / canvas.rows + layers[l].spaceY * 2
+        const key = Math.floor(y / h) + "_" + Math.floor(x / w);
+        if (layers[selectedLayer].hidden.has(key)) {
+            layers[selectedLayer].hidden.delete(key);
+        } else {
+            layers[selectedLayer].hidden.add(key);
+        }
+        redrawCanvas();
+    } else {
+        console.log('No layer selected.');
+    }
+}

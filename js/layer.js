@@ -9,6 +9,7 @@ class Layer {
         this.offsetY = 0;
         this.spaceX = 0;
         this.spaceY = 0;
+        this.hidden = new Set();
         this.colorMap = new Map();
         this.option = document.createElement('option');
         this.option.innerHTML = asset.id;
@@ -29,6 +30,7 @@ class Layer {
         copy.spaceX = this.offsetX;
         copy.spaceY = this.offsetY;
         copy.back = this.back;
+        copy.hidden = new Set(this.hidden);
         copy.colorMap = new Map(this.colorMap);
         copy.refreshOption();
         return copy;
@@ -58,6 +60,7 @@ class Layer {
         let offsetY = other.offsetY;
         let spaceX = other.spaceX;
         let spaceY = other.spaceY;
+        let hidden = other.hidden;
         let colorMap = other.colorMap;
         other.asset = this.asset;
         other.back = this.back;
@@ -65,6 +68,7 @@ class Layer {
         other.offsetY = this.offsetY;
         other.spaceX = this.spaceX;
         other.spaceY = this.spaceY;
+        other.hidden = this.hidden;
         other.colorMap = this.colorMap;
         this.asset = asset;
         this.back = back;
@@ -72,6 +76,7 @@ class Layer {
         this.offsetY = offsetY;
         this.spaceX = spaceX;
         this.spaceY = spaceY;
+        this.hidden = hidden;
         this.colorMap = colorMap;
         // Refresh name
         other.refreshOption();
@@ -123,9 +128,11 @@ class Layer {
         var sh = img.height / rows;
         for (i = 0; i < rows; i++) {
             for (j = 0; j < cols; j++) {
-                var x = this.offsetX + sw * j + this.spaceX * (j + 1) + this.spaceX * j;
-                var y = this.offsetY + sh * i + this.spaceY * (i + 1) + this.spaceY * i;
-                ctx.drawImage(assetCanvas, sw * j, sh * i, sw, sh, x, y, sw, sh);
+                if (!this.hidden.has(i + "_" + j)) {
+                    var x = this.offsetX + sw * j + this.spaceX * (j + 1) + this.spaceX * j;
+                    var y = this.offsetY + sh * i + this.spaceY * (i + 1) + this.spaceY * i;
+                    ctx.drawImage(assetCanvas, sw * j, sh * i, sw, sh, x, y, sw, sh);
+                }
             }
         }
     }
