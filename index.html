@@ -18,31 +18,103 @@
                 Layers:<br>
                 <div class="row" id="layers">
                     <div id="layerButtons">
-                        <button onclick="addLayer()"><img src="img/new.png"></button>
-                        <button onclick="deleteLayer()"><img src="img/delete.png"></button><br>
-                        <button onclick="moveLayerUp()"><img src="img/up.png"></button>
-                        <button onclick="moveLayerTop()"><img src="img/top.png"></button><br>
-                        <button onclick="moveLayerDown()"><img src="img/down.png"></button>
-                        <button onclick="moveLayerBottom()"><img src="img/bottom.png"></button><br>
+                        <button onclick="addLayer()" class="tooltip">
+                            <img src="img/add.png">
+                            <h6 class="tooltiptext">Add layer with selected image.</h6>
+                        </button>
+                        <button onclick="deleteLayer()" class="tooltip">
+                            <img src="img/delete.png">
+                            <h6 class="tooltiptext">Remove selected layer.</h6>
+                        </button><br>
+                        <button onclick="moveLayerUp()" class="tooltip">
+                            <img src="img/up.png">
+                            <h6 class="tooltiptext">Move selected layer up.</h6>
+                        </button>
+                        <button onclick="moveLayerTop()" class="tooltip">
+                            <img src="img/top.png">
+                            <h6 class="tooltiptext">Move selected layer to top.</h6>
+                        </button><br>
+                        <button onclick="moveLayerDown()" class="tooltip">
+                            <img src="img/down.png">
+                            <h6 class="tooltiptext">Move selected layer down.</h6>
+                        </button>
+                        <button onclick="moveLayerBottom()" class="tooltip">
+                            <img src="img/bottom.png">
+                            <h6 class="tooltiptext">Move selected layer to bottom.</h6>
+                        </button><br>
+                        <button onclick="replaceLayerImg()" class="tooltip">
+                            <img src="img/replace.png">
+                            <h6 class="tooltiptext">Replace image of selected layer with the selected image in the folder.</h6>
+                        </button>
+                        <button onclick="duplicateLayer()" class="tooltip">
+                            <img src="img/duplicate.png">
+                            <h6 class="tooltiptext">Duplicate selected layer.</h6>
+                        </button><br>
                     </div>
-                    <select id="layerSelector" multiple size="8"></select>
+                    <select id="layerSelector" size="8"></select>
                 </div>
             </div>
 
             <div class="col">
                 <div class="group">
+                    Offset:
+                    <button class="tooltip" onclick="resetOffset()">
+                        Reset
+                        <h6 class="tooltiptext">Move selected layer back to center.</h6>
+                    </button>
+                    <div class="grid-container">
+                        <div class="grid-item"></div>
+                        <div class="grid-item"><button class="tooltip" onclick="increaseOffset(0,-1)">
+                            <img src="img/up.png">
+                            <h6 class="tooltiptext">Move selected layer up.</h6>
+                            </button></div>
+                        <div class="grid-item"></div>
+                        <div class="grid-item"><button class="tooltip" onclick="increaseOffset(-1,0)">
+                            <img src="img/left.png">
+                            <h6 class="tooltiptext">Move selected layer left.</h6>
+                            </button></div>
+                        <div class="grid-item"><button class="tooltip" onclick="increaseOffset(0,1)">
+                            <img src="img/down.png">
+                            <h6 class="tooltiptext">Move selected layer down.</h6>
+                            </button></div>
+                        <div class="grid-item"><button class="tooltip" onclick="increaseOffset(1,0)">
+                            <img src="img/right.png">
+                            <h6 class="tooltiptext">Move selected layer right.</h6>
+                            </button></div>
+                    </div>
+                </div>
+                <div class="group">
+                    Spacing:
+                    <button class="tooltip" onclick="resetSpacing()">
+                        Reset
+                        <h6 class="tooltiptext">Reset horizontal and vertical spacing of selected layer.</h6>
+                    </button>
+                    <div class="grid-container">
+                        <div>H:</div>
+                        <button class="tooltip" onclick="increaseSpacing(1,0)">
+                            <img src="img/add.png">
+                            <h6 class="tooltiptext">Increase horizontal spacing of selected layer.</h6>
+                        </button>
+                        <button class="tooltip" onclick="increaseSpacing(-1,0)">
+                            <img src="img/delete.png">
+                            <h6 class="tooltiptext">Decrease horizontal spacing of selected layer.</h6>
+                        </button>
+                        <div>V:</div>
+                        <button class="tooltip" onclick="increaseSpacing(0,1)">
+                            <img src="img/add.png">
+                            <h6 class="tooltiptext">Increase vertical spacing of selected layer.</h6>
+                        </button>
+                        <button class="tooltip" onclick="increaseSpacing(0,-1)">
+                            <img src="img/delete.png">
+                            <h6 class="tooltiptext">Decrease vertical spacing of selected layer.</h6>
+                        </button>
+                    </div>
+                </div>
+                <div class="group">
                     Colors:<br>
                     <div id="colors">
                         <select id="colorSelector"></select> <br>
                         <div id="palettes" class="grid-container"></div>
-                    </div>
-                </div>
-                <div class="group">
-                    Offset:
-                    <div class="grid-container">
-                        <div class="grid-item"> </div><button class="grid-item" onclick="increaseOffset(0,-1)">^</button><div class="grid-item"> </div>
-                        <button class="grid-item" onclick="increaseOffset(-1,0)">&lt</button><button class="grid-item" onclick="resetOffset()">0</button><button class="grid-item" onclick="increaseOffset(1,0)">&gt</button>
-                        <div class="grid-item"> </div><button class="grid-item" onclick="increaseOffset(0,1)">v</button><div class="grid-item"> </div>
                     </div>
                 </div>
             </div>

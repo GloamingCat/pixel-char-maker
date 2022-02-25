@@ -7,7 +7,6 @@ var layerSelector = document.getElementById('layerSelector');
 var colorSelector = document.getElementById('colorSelector');
 var paletteButtons = document.getElementById('palettes');
 var canvas = document.getElementById('spritesheet');
-var ctx = canvas.getContext('2d');
 
 // Settings
 

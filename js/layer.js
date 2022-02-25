@@ -2,23 +2,45 @@
 class Layer {
 
     constructor(asset, img) {
-        const layerID = layers.length;
-        console.log('New layer' + layerID + ': ' + asset.id);
-        this.id = layerID;
+        this.id = layers.length;
         this.asset = asset;
         this.img = img;
         this.offsetX = 0;
         this.offsetY = 0;
+        this.spaceX = 0;
+        this.spaceY = 0;
         this.colorMap = new Map();
         this.option = document.createElement('option');
         this.option.innerHTML = asset.id;
         this.option.value = '' + this.id;
+        const self = this;
         this.option.addEventListener('click', function(event) {
-            selectedLayer = layerID;
-            refreshColorSelector(img);
+            selectedLayer = self.id;
+            refreshColorSelector(self.img);
         });
         layers.push(this);
         layerSelector.prepend(this.option);
+    }
+
+    clone() {
+        var copy = new Layer(this.asset, this.img);
+        copy.offsetX = this.offsetX;
+        copy.offsetY = this.offsetY;
+        copy.spaceX = this.offsetX;
+        copy.spaceY = this.offsetY;
+        copy.colorMap = new Map(this.colorMap);
+        copy.refreshOption();
+        return copy;
+    }
+
+    refreshOption() {
+        this.option.value = '' + this.id;
+        this.option.innerHTML = this.asset.id;
+    }
+
+    replaceImage(asset, img) {
+        this.asset = asset;
+        this.img = img;
     }
 
     setPalette(colorId, paletteId) {
@@ -34,21 +56,26 @@ class Layer {
         let asset = other.asset;
         let offsetX = other.offsetX;
         let offsetY = other.offsetY;
+        let spaceX = other.spaceX;
+        let spaceY = other.spaceY;
         let colorMap = other.colorMap;
         other.img = this.img;
         other.asset = this.asset;
         other.offsetX = this.offsetX;
         other.offsetY = this.offsetY;
+        other.spaceX = this.spaceX;
+        other.spaceY = this.spaceY;
         other.colorMap = this.colorMap;
         this.img = img;
         this.asset = asset;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
+        this.spaceX = spaceX;
+        this.spaceY = spaceY;
         this.colorMap = colorMap;
         // Refresh name
-        let innerHTML = other.option.innerHTML;
-        other.option.innerHTML = this.option.innerHTML;
-        this.option.innerHTML = innerHTML;
+        other.refreshOption();
+        this.refreshOption();
     }
 
     moveUp() {
@@ -80,7 +107,7 @@ class Layer {
         topLayer.option = null;
     }
 
-    draw(ctx) {
+    draw(cols, rows, ctx) {
         let assetCanvas = document.createElement('canvas');
         assetCanvas.width = this.img.width;
         assetCanvas.height = this.img.height;
@@ -89,7 +116,15 @@ class Layer {
         let imgData = assetCtx.getImageData(0, 0, assetCanvas.width, assetCanvas.height);
         convertPixels(imgData.data, this.colorMap);
         assetCtx.putImageData(imgData, 0, 0);
-        ctx.drawImage(assetCanvas, this.offsetX, this.offsetY);
+        var sw = this.img.width / cols;
+        var sh = this.img.height / rows;
+        for (i = 0; i < rows; i++) {
+            for (j = 0; j < cols; j++) {
+                var x = this.offsetX + sw * j + this.spaceX * (j + 1) + this.spaceX * j;
+                var y = this.offsetY + sh * i + this.spaceY * (i + 1) + this.spaceY * i;
+                ctx.drawImage(assetCanvas, sw * j, sh * i, sw, sh, x, y, sw, sh);
+            }
+        }
     }
 
 }

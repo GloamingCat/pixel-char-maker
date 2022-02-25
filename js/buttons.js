@@ -1,9 +1,18 @@
 
 // Canvas
 function redrawCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var maxW = 0;
+    var maxH = 0;
     for(l in layers) {
-        layers[l].draw(ctx);
+        maxW = Math.max(maxW, layers[l].img.width + layers[l].spaceX * 2 * canvas.cols);
+        maxH = Math.max(maxH, layers[l].img.height + layers[l].spaceY * 2 * canvas.rows);
+    }
+    canvas.width = maxW;
+    canvas.height = maxH;
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, maxW, maxH);
+    for(l in layers) {
+        layers[l].draw(canvas.cols, canvas.rows, ctx);
     }
 }
 
@@ -86,11 +95,26 @@ function increaseOffset(x, y) {
         redrawCanvas();
     }
 }
-
 function resetOffset() {
     if (selectedLayer != -1) {
         layers[selectedLayer].offsetX = 0;
         layers[selectedLayer].offsetY = 0;
+        redrawCanvas();
+    }
+}
+
+// Spacing
+function increaseSpacing(x, y) {
+    if (selectedLayer != -1) {
+        layers[selectedLayer].spaceX += x;
+        layers[selectedLayer].spaceY += y;
+        redrawCanvas();
+    }
+}
+function resetSpacing() {
+    if (selectedLayer != -1) {
+        layers[selectedLayer].spaceX = 0;
+        layers[selectedLayer].spaceY = 0;
         redrawCanvas();
     }
 }
@@ -163,6 +187,28 @@ function moveLayerBottom() {
     if (selectedLayer != -1) {
         layers[selectedLayer].moveToBottom();
         selectLayer(layers[0]);
+        redrawCanvas();
+    } else {
+        console.log('No layer selected.');
+    }
+}
+
+function replaceLayerImg() {
+    if (selectedLayer != -1) {
+        if (selectedAsset != null) {
+            layers[selectedLayer].replaceImage(selectedAsset[0], selectedAsset[1]);
+            redrawCanvas();
+        } else {
+            console.log('No asset selected.');
+        }
+    } else {
+        console.log('No layer selected.');
+    }
+}
+
+function duplicateLayer() {
+    if (selectedLayer != -1) {
+        selectLayer(layers[selectedLayer].clone());
         redrawCanvas();
     } else {
         console.log('No layer selected.');
