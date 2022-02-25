@@ -99,19 +99,19 @@ function addFolder(folder, path) {
 const xmlhttp = new XMLHttpRequest();
 xmlhttp.onload = function() {
     var settings = JSON.parse(this.responseText);
+    const path = 'templates/' + settings.template + '/';
     canvas.width = settings.width;
     canvas.height = settings.height;
     paletteImg = new Image();
-    paletteImg.src = settings.paletteFile;
+    paletteImg.src = path + settings.paletteFile;
     paletteImg.onload = function() {
         loadPalettes(paletteImg);
-        const path = 'templates/' + settings.template + '/'
         for (f in settings.folders) {
             addFolder(settings.folders[f], path);
         }
         addLayer();
     }
 };
-xmlhttp.open("GET", "settings.json");
+xmlhttp.open('GET', 'settings-lth.json');
 xmlhttp.send();
 
