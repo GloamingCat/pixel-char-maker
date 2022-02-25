@@ -10,6 +10,17 @@ canvas {
     image-rendering: pixelated;
 }
 
+.grid-container {
+    display: grid;
+    gap: 4px 4px;
+    grid-template-columns: auto auto auto;
+}
+
+.group {
+    border: 2px;
+    border-color: black;
+}
+
 .folder {
     display: none;
 }

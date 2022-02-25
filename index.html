@@ -12,10 +12,9 @@
                 <div class="row" id="folderStack"></div>
             </div>
             
-            <div>
+            <div class="group">
                 Layers:<br>
                 <div class="row" id="layers">
-                    <select id="layerSelector" multiple size="8"></select>
                     <div id="layerButtons">
                         <button onclick="addLayer()"><img src="new.png"></button>
                         <button onclick="deleteLayer()"><img src="delete.png"></button><br>
@@ -24,24 +23,31 @@
                         <button onclick="moveLayerDown()"><img src="down.png"></button>
                         <button onclick="moveLayerBottom()"><img src="bottom.png"></button><br>
                     </div>
+                    <select id="layerSelector" multiple size="8"></select>
                 </div>
             </div>
 
-            <div>
+            <div class="group">
                 Colors:<br>
                 <div id="colors">
-                    <select id="colorIds"></select> <br>
-                    <div id="palettes" class="row"></div>
+                    <select id="colorSelector"></select> <br>
+                    <div id="palettes" class="grid-container"></div>
+                </div>
+                Offset:
+                <div class="grid-container">
+                    <div class="grid-item"> </div><button class="grid-item" onclick="increaseOffset(0,-1)">^</button><div class="grid-item"> </div>
+                    <button class="grid-item" onclick="increaseOffset(-1,0)">&lt</button><button class="grid-item" onclick="resetOffset()">0</button><button class="grid-item" onclick="increaseOffset(1,0)">&gt</button>
+                    <div class="grid-item"> </div><button class="grid-item" onclick="increaseOffset(0,1)">v</button><div class="grid-item"> </div>
                 </div>
             </div>
 
+            <div id="canvas">
+                <canvas id="spritesheet"></canvas>
+                <canvas id="animation"></canvas>
+            </div>
         </div>
 
-        <div class="row" id="canvas">
-            <canvas id="spritesheet"></canvas>
-            <canvas id="animation"></canvas>
-        </div>
-
+        <script src="globals.js"></script>
         <script src="layer.js"></script>
         <script src="buttons.js"></script>
         <script src="setup.js"></script>

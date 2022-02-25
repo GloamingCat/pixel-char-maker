@@ -1,12 +1,11 @@
 
-var selectedFolder = null;
-var selectedCloth = null;
-var selectedColor = 0;
-var selectedPalette = null;
-
-var colorIds = document.getElementById('colorIds');
-var canvas = document.getElementById('spritesheet');
-var ctx = canvas.getContext('2d');
+// Canvas
+function redrawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for(l in layers) {
+        layers[l].draw(ctx);
+    }
+}
 
 // Folder of clothes.
 function selectFolder(folderDiv) {
@@ -30,11 +29,11 @@ function selectCloth(element, img) {
 function selectLayer(layer) {
     if (layer == null) {
         selectedLayer = -1;
-        refreshColorIds(null);
+        refreshColorSelector(null);
     } else {
         layerSelector.value = layer.option.value;
         selectedLayer = layer.id;
-        refreshColorIds(layer.img);
+        refreshColorSelector(layer.img);
     }
     if (selectedPalette != null) {
         selectedPalette.className = 'color'
@@ -42,23 +41,23 @@ function selectLayer(layer) {
 }
 
 // Refresh the list of colors of selected cloth.
-function refreshColorIds(img) {
-    colorIds.innerHTML = '';
+function refreshColorSelector(img) {
+    colorSelector.innerHTML = '';
+    colorSelector.value = 0;
     if (img == null || !colorLists.has(img))
         return;
     let n = colorLists.get(img).length;
-    colorIds.innerHTML = '';
     for (i = 0; i < n; i++) {
         let option = document.createElement('option');
         option.innerHTML = 'Color ' + (i + 1);
         option.value = i;
-        colorIds.addEventListener('change', function(event) {
+        colorSelector.addEventListener('change', function(event) {
             selectedColor = event.target.value;
             if (selectedPalette != null) {
                 selectedPalette.className = 'color'
             }
         });
-        colorIds.append(option);
+        colorSelector.append(option);
     }
     if (selectedPalette != null) {
         selectedPalette.className = 'color'
@@ -68,6 +67,7 @@ function refreshColorIds(img) {
 // Color buttons.
 function selectPalette(p, button) {
     if (selectedLayer != -1) {
+        console.log('Selected palette: ' + p);
         layers[selectedLayer].setPalette(selectedColor, p);
         redrawCanvas();
         if (selectedPalette != null) {
@@ -78,10 +78,20 @@ function selectPalette(p, button) {
     }
 }
 
-function redrawCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for(l in layers) {
-        layers[l].draw(ctx);
+// Offset
+function increaseOffset(x, y) {
+    if (selectedLayer != -1) {
+        layers[selectedLayer].offsetX += x;
+        layers[selectedLayer].offsetY += y;
+        redrawCanvas();
+    }
+}
+
+function resetOffset() {
+    if (selectedLayer != -1) {
+        layers[selectedLayer].offsetX = 0;
+        layers[selectedLayer].offsetY = 0;
+        redrawCanvas();
     }
 }
 
