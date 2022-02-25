@@ -109,6 +109,8 @@ class Layer {
 
     draw(cols, rows, ctx) {
         var img = this.back ? this.asset.back : this.asset.img;
+        if (img == null)
+            return;
         let assetCanvas = document.createElement('canvas');
         assetCanvas.width = img.width;
         assetCanvas.height = img.height;

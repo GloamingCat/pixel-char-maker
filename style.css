@@ -40,10 +40,16 @@ canvas {
     flex-direction: column;
 }
 
-.grid-container {
+.button-grid {
     display: grid;
     gap: 4px 4px;
     grid-template-columns: auto auto auto;
+}
+
+.color-grid {
+    display: grid;
+    gap: 2px 2px;
+    grid-template-columns: auto auto auto auto;
 }
 
 .group {
