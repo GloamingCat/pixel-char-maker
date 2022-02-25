@@ -14,9 +14,9 @@
         {
             "name": "Hair",
             "assets": [
-                "Tum-Tum",
-                "Blim-Blim",
-                "Pom-Pom"
+                "Hair1",
+                "Hair2",
+                "Hair3"
             ]
         },
         {
