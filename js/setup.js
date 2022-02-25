@@ -87,10 +87,15 @@ function addFolder(folder, path) {
     folderButtons.append(folderButton);
     for (i in folder.assets) {
         let assetImg = addAsset(folder.assets[i], path, folderDiv);
-        if (folder.name == 'Body' && i == 0) {
-            assetImg.onload = redrawCanvas;
-            selectFolder(folderDiv);
-            selectAsset(folderDiv.firstElementChild, assetImg);
+        if (i == 0) {
+            if (folder.name == 'Body') {
+                assetImg.onload = redrawCanvas;
+                selectFolder(folderDiv);
+                selectAsset(folderDiv.firstElementChild, assetImg);
+            }
+            folderButton.addEventListener('click', function(event) {
+                selectAsset(folderDiv.firstElementChild, assetImg);
+            });
         }
     }
     return folderDiv;
