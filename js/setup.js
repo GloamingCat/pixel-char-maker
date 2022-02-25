@@ -56,23 +56,32 @@ function createColorList(img) {
 }
 
 function addAsset(name, path, folderDiv) {
-    const img = new Image();
-    img.src = path + name + '.png';
+    var back = false;
+    if (name.includes('_back')) {
+        name = name.replace('_back', '');
+        back = true;
+    }
     const asset = document.createElement('img');
-    asset.src = img.src;
-    asset.className = 'asset'
     asset.id = name;
+    asset.className = 'asset'
+    asset.src = path + name + '.png';
+    asset.img = new Image();
+    asset.img.src = asset.src;
+    if (back) {
+        asset.back = new Image();
+        asset.back.src = path + name + '_back.png';
+    }
     asset.addEventListener('click', function(event) {
-        selectAsset(asset, img);
+        selectAsset(asset);
     });
-    asset.onload = function() {
-        colorLists.set(img, createColorList(img));
+    asset.img.onload = function() {
+        colorLists.set(asset, createColorList(asset.img));
         if (name == 'Body') {
-            refreshColorSelector(img);
+            refreshColorSelector(asset);
         }
     }
     folderDiv.append(asset);
-    return img;
+    return asset;
 }
 
 function addFolder(folder, path) {
@@ -86,15 +95,15 @@ function addFolder(folder, path) {
     });
     folderButtons.append(folderButton);
     for (i in folder.assets) {
-        let assetImg = addAsset(folder.assets[i], path, folderDiv);
+        let asset = addAsset(folder.assets[i], path, folderDiv);
         if (i == 0) {
             if (folder.name == 'Body') {
-                assetImg.onload = redrawCanvas;
+                asset.onload = redrawCanvas;
                 selectFolder(folderDiv);
-                selectAsset(folderDiv.firstElementChild, assetImg);
+                selectAsset(folderDiv.firstElementChild);
             }
             folderButton.addEventListener('click', function(event) {
-                selectAsset(folderDiv.firstElementChild, assetImg);
+                selectAsset(folderDiv.firstElementChild);
             });
         }
     }

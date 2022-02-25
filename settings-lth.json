@@ -8,7 +8,8 @@
         {
             "name": "Body",
             "assets": [
-                "Body"
+                "Body",
+                "Eyes1"
             ]
         },
         {
@@ -28,7 +29,7 @@
         {
             "name": "Accessories",
             "assets": [
-                "Hat"
+                "Hat_back"
             ]
         }
     ],

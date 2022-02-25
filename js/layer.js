@@ -1,10 +1,10 @@
 
 class Layer {
 
-    constructor(asset, img) {
+    constructor(asset, back) {
         this.id = layers.length;
         this.asset = asset;
-        this.img = img;
+        this.back = back;
         this.offsetX = 0;
         this.offsetY = 0;
         this.spaceX = 0;
@@ -16,18 +16,19 @@ class Layer {
         const self = this;
         this.option.addEventListener('click', function(event) {
             selectedLayer = self.id;
-            refreshColorSelector(self.img);
+            refreshColorSelector(self.asset);
         });
         layers.push(this);
         layerSelector.prepend(this.option);
     }
 
     clone() {
-        var copy = new Layer(this.asset, this.img);
+        var copy = new Layer(this.asset);
         copy.offsetX = this.offsetX;
         copy.offsetY = this.offsetY;
         copy.spaceX = this.offsetX;
         copy.spaceY = this.offsetY;
+        copy.back = this.back;
         copy.colorMap = new Map(this.colorMap);
         copy.refreshOption();
         return copy;
@@ -35,16 +36,15 @@ class Layer {
 
     refreshOption() {
         this.option.value = '' + this.id;
-        this.option.innerHTML = this.asset.id;
-    }
-
-    replaceImage(asset, img) {
-        this.asset = asset;
-        this.img = img;
+        if (this.back) {
+            this.option.innerHTML = this.asset.id + ' - back';
+        } else {
+            this.option.innerHTML = this.asset.id;
+        }
     }
 
     setPalette(colorId, paletteId) {
-        let oldPalette = palettes[colorLists.get(this.img)[colorId]];
+        let oldPalette = palettes[colorLists.get(this.asset)[colorId]];
         let newPalette = palettes[paletteId];
         for (i in oldPalette) {
             this.colorMap.set(pixelToKey(oldPalette[i], 0), newPalette[i]);
@@ -52,22 +52,22 @@ class Layer {
     }
 
     swap(other) {
-        let img = other.img;
         let asset = other.asset;
+        let back = other.back;
         let offsetX = other.offsetX;
         let offsetY = other.offsetY;
         let spaceX = other.spaceX;
         let spaceY = other.spaceY;
         let colorMap = other.colorMap;
-        other.img = this.img;
         other.asset = this.asset;
+        other.back = this.back;
         other.offsetX = this.offsetX;
         other.offsetY = this.offsetY;
         other.spaceX = this.spaceX;
         other.spaceY = this.spaceY;
         other.colorMap = this.colorMap;
-        this.img = img;
         this.asset = asset;
+        this.back = back;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.spaceX = spaceX;
@@ -108,16 +108,17 @@ class Layer {
     }
 
     draw(cols, rows, ctx) {
+        var img = this.back ? this.asset.back : this.asset.img;
         let assetCanvas = document.createElement('canvas');
-        assetCanvas.width = this.img.width;
-        assetCanvas.height = this.img.height;
+        assetCanvas.width = img.width;
+        assetCanvas.height = img.height;
         let assetCtx = assetCanvas.getContext('2d');
-        assetCtx.drawImage(this.img, 0, 0);
+        assetCtx.drawImage(img, 0, 0);
         let imgData = assetCtx.getImageData(0, 0, assetCanvas.width, assetCanvas.height);
         convertPixels(imgData.data, this.colorMap);
         assetCtx.putImageData(imgData, 0, 0);
-        var sw = this.img.width / cols;
-        var sh = this.img.height / rows;
+        var sw = img.width / cols;
+        var sh = img.height / rows;
         for (i = 0; i < rows; i++) {
             for (j = 0; j < cols; j++) {
                 var x = this.offsetX + sw * j + this.spaceX * (j + 1) + this.spaceX * j;

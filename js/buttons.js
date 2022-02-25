@@ -4,8 +4,8 @@ function redrawCanvas() {
     var maxW = 0;
     var maxH = 0;
     for(l in layers) {
-        maxW = Math.max(maxW, layers[l].img.width + layers[l].spaceX * 2 * canvas.cols);
-        maxH = Math.max(maxH, layers[l].img.height + layers[l].spaceY * 2 * canvas.rows);
+        maxW = Math.max(maxW, layers[l].asset.img.width + layers[l].spaceX * 2 * canvas.cols);
+        maxH = Math.max(maxH, layers[l].asset.img.height + layers[l].spaceY * 2 * canvas.rows);
     }
     canvas.width = maxW;
     canvas.height = maxH;
@@ -26,11 +26,11 @@ function selectFolder(folderDiv) {
 }
 
 // Specific piece of asset.
-function selectAsset(element, img) {
+function selectAsset(element) {
     if (selectedAsset != null) {
-        selectedAsset[0].className = 'asset';
+        selectedAsset.className = 'asset';
     }
-    selectedAsset = [element, img];
+    selectedAsset = element;
     element.className = 'selectedAsset';
 }
 
@@ -42,7 +42,7 @@ function selectLayer(layer) {
     } else {
         layerSelector.value = layer.option.value;
         selectedLayer = layer.id;
-        refreshColorSelector(layer.img);
+        refreshColorSelector(layer.asset);
     }
     if (selectedPalette != null) {
         selectedPalette.className = 'color'
@@ -50,13 +50,13 @@ function selectLayer(layer) {
 }
 
 // Refresh the list of colors of selected asset.
-function refreshColorSelector(img) {
+function refreshColorSelector(asset) {
     colorSelector.innerHTML = '';
     colorSelector.value = '0';
-    if (img == null || !colorLists.has(img)) {
+    if (asset.img == null || !colorLists.has(asset)) {
         return;
     }
-    let n = colorLists.get(img).length;
+    let n = colorLists.get(asset).length;
     for (i = 0; i < n; i++) {
         let option = document.createElement('option');
         option.innerHTML = 'Color ' + (i + 1);
@@ -121,7 +121,12 @@ function resetSpacing() {
 
 function addLayer() {
     if (selectedAsset != null) {
-        selectLayer(new Layer(selectedAsset[0], selectedAsset[1]));
+        let layer = new Layer(selectedAsset, false);
+        if (selectedAsset.back != null) {
+            let backLayer = new Layer(selectedAsset, true);
+            backLayer.moveToBottom();
+        }
+        selectLayer(layer);
         redrawCanvas();
     } else {
         console.log('No asset selected.');
@@ -196,7 +201,7 @@ function moveLayerBottom() {
 function replaceLayerImg() {
     if (selectedLayer != -1) {
         if (selectedAsset != null) {
-            layers[selectedLayer].replaceImage(selectedAsset[0], selectedAsset[1]);
+            layers[selectedLayer].asset = selectedAsset;
             redrawCanvas();
         } else {
             console.log('No asset selected.');
