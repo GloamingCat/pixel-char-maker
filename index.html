@@ -63,8 +63,21 @@
                 </div>
             </div>
 
-            <div class="col">
-                <div class="group">
+            <div class="group">
+                Colors:<br>
+                <div id="colors">
+                    <select id="colorSelector"></select> <br>
+                    <div id="palettes" class="color-grid"></div>
+                    <div id="rgb" class="rgb-grid">
+                        R:<input type="range" id="redSlider" onchange="setRGB(this.value, null, null)">
+                        G:<input type="range" id="greenSlider" onchange="setRGB(null, this.value, null)">
+                        B:<input type="range" id="blueSlider" onchange="setRGB(null, null, this.value)">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="group"><div class="col">
+                <div>
                     Offset:
                     <button class="tooltip" onclick="resetOffset()">
                         Reset
@@ -91,7 +104,8 @@
                             </button></div>
                     </div>
                 </div>
-                <div class="group">
+                <br>
+                <div>
                     Spacing:
                     <button class="tooltip" onclick="resetSpacing()">
                         Reset
@@ -118,14 +132,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="group">
-                    Colors:<br>
-                    <div id="colors">
-                        <select id="colorSelector"></select> <br>
-                        <div id="palettes" class="color-grid"></div>
-                    </div>
-                </div>
-            </div>
+            </div></div>
+
             <div class="group" id="canvas">
                 Preview:<br>
                 <div class="tooltip"> 

@@ -3,6 +3,7 @@
     "cols": 3,
     "width": 72,
     "height": 256,
+    "paletteFile": "palettes",
     "folders": [
         {
             "name": "Body",
@@ -37,8 +38,5 @@
                 "Glasses"
             ]
         }
-    ],
-    "paletteFile": "palettes",
-    "nPalettes": 16,
-    "nTones": 5
+    ]
 }

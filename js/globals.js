@@ -6,6 +6,9 @@ var folderStack = document.getElementById('folderStack');
 var layerSelector = document.getElementById('layerSelector');
 var colorSelector = document.getElementById('colorSelector');
 var paletteButtons = document.getElementById('palettes');
+var redSlider = document.getElementById('redSlider');
+var greenSlider = document.getElementById('greenSlider');
+var blueSlider = document.getElementById('blueSlider');
 var canvas = document.getElementById('spritesheet');
 
 // Settings
@@ -19,7 +22,7 @@ var layers = [];
 var selectedFolder = null;
 var selectedAsset = null;
 var selectedLayer = -1;
-var selectedColor = 0;
+var selectedColor = -1;
 var selectedPalette = null;
 
 function resetGlobals() {
@@ -34,6 +37,6 @@ function resetGlobals() {
     selectedFolder = null;
     selectedAsset = null;
     selectedLayer = -1;
-    selectedColor = 0;
+    selectedColor = -1;
     selectedPalette = null;
 }

@@ -11,6 +11,7 @@ class Layer {
         this.spaceY = 0;
         this.hidden = new Set();
         this.colorMap = new Map();
+        this.rgb = [1.0, 1.0, 1.0];
         this.option = document.createElement('option');
         this.option.innerHTML = asset.id;
         this.option.value = '' + this.id;
@@ -32,6 +33,7 @@ class Layer {
         copy.back = this.back;
         copy.hidden = new Set(this.hidden);
         copy.colorMap = new Map(this.colorMap);
+        copy.rgb = [this.rgb[0], this.rgb[1], this.rgb[2]];
         copy.refreshOption();
         return copy;
     }
@@ -53,6 +55,38 @@ class Layer {
         }
     }
 
+    setRGB(colorId, paletteId, r, g, b) {
+        if (colorId == -1) {
+            if (r != null) this.rgb[0] = r / 100.0;
+            if (g != null) this.rgb[1] = g / 100.0;
+            if (b != null) this.rgb[2] = b / 100.0;
+            return;
+        } else if (paletteId == -1) {
+            let oldPalette = palettes[colorLists.get(this.asset)[colorId]];
+            for (i in oldPalette) {
+                var key = pixelToKey(oldPalette[i], 0);
+                var currentColor = this.colorMap.get(key);
+                if (currentColor == null) currentColor = oldPalette[i];
+                var newr = r == null ? currentColor[0] : oldPalette[i][0] * r / 100.0;
+                var newg = g == null ? currentColor[1] : oldPalette[i][1] * g / 100.0;
+                var newb = b == null ? currentColor[2] : oldPalette[i][2] * b / 100.0;
+                this.colorMap.set(key, [newr, newg, newb]);
+            }
+        } else {
+            let oldPalette = palettes[colorLists.get(this.asset)[colorId]];
+            let newPalette = palettes[paletteId];
+            for (i in oldPalette) {
+                var key = pixelToKey(oldPalette[i], 0);
+                var currentColor = this.colorMap.get(key);
+                if (currentColor == null) currentColor = oldPalette[i];
+                var newr = r == null ? currentColor[0] : newPalette[i][0] * r / 100.0;
+                var newg = g == null ? currentColor[1] : newPalette[i][1] * g / 100.0;
+                var newb = b == null ? currentColor[2] : newPalette[i][2] * b / 100.0;
+                this.colorMap.set(key, [newr, newg, newb]);
+            }
+        }
+    }
+
     swap(other) {
         let asset = other.asset;
         let back = other.back;
@@ -62,6 +96,7 @@ class Layer {
         let spaceY = other.spaceY;
         let hidden = other.hidden;
         let colorMap = other.colorMap;
+        let rgb = other.rgb;
         other.asset = this.asset;
         other.back = this.back;
         other.offsetX = this.offsetX;
@@ -70,6 +105,7 @@ class Layer {
         other.spaceY = this.spaceY;
         other.hidden = this.hidden;
         other.colorMap = this.colorMap;
+        other.rgb = this.rgb;
         this.asset = asset;
         this.back = back;
         this.offsetX = offsetX;
@@ -78,6 +114,7 @@ class Layer {
         this.spaceY = spaceY;
         this.hidden = hidden;
         this.colorMap = colorMap;
+        this.rgb = rgb;
         // Refresh name
         other.refreshOption();
         this.refreshOption();
@@ -122,7 +159,7 @@ class Layer {
         let assetCtx = assetCanvas.getContext('2d');
         assetCtx.drawImage(img, 0, 0);
         let imgData = assetCtx.getImageData(0, 0, assetCanvas.width, assetCanvas.height);
-        convertPixels(imgData.data, this.colorMap);
+        convertPixels(imgData.data, this.colorMap, this.rgb);
         assetCtx.putImageData(imgData, 0, 0);
         var sw = img.width / cols;
         var sh = img.height / rows;
@@ -143,7 +180,7 @@ function pixelToKey(data, i) {
     return (1 << 24) + (data[i] << 16) + (data[i+1] << 8) + data[i+2];
 }
 
-function convertPixels(data, map) {
+function convertPixels(data, map, rgb) {
     for (var i = 0; i < data.length; i += 4) {
         var pixel = pixelToKey(data, i);
         if (map.has(pixel)) {
@@ -152,5 +189,8 @@ function convertPixels(data, map) {
             data[i + 1] = pixel[1];
             data[i + 2] = pixel[2];
         }
+        data[i] *= rgb[0];
+        data[i + 1] *= rgb[1];
+        data[i + 2] *= rgb[2];
     }
 }

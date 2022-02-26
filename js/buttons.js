@@ -44,15 +44,14 @@ function selectLayer(layer) {
         selectedLayer = layer.id;
         refreshColorSelector(layer.asset);
     }
-    if (selectedPalette != null) {
-        selectedPalette.className = 'color'
-    }
+    deselectPalette();
 }
 
 // Refresh the list of colors of selected asset.
 function refreshColorSelector(asset) {
     colorSelector.innerHTML = '';
     colorSelector.value = '0';
+    selectedColor = -1;
     if (asset.img == null || !colorLists.has(asset)) {
         return;
     }
@@ -63,31 +62,55 @@ function refreshColorSelector(asset) {
         option.value = i;
         colorSelector.addEventListener('change', function(event) {
             selectedColor = event.target.value;
-            if (selectedPalette != null) {
-                selectedPalette.className = 'color'
-            }
+            deselectPalette();
         });
         colorSelector.append(option);
     }
+    if (n > 0) {
+        selectedColor = 0;
+    }
+    deselectPalette();
+    redSlider.value = 100;
+    greenSlider.value = 100;
+    blueSlider.value = 100;
+}
+
+// Palette.
+function selectPalette(event) {
+    if (selectedLayer != -1 && selectedColor != -1) {
+        layers[selectedLayer].setPalette(selectedColor, event.target.paletteId);
+        layers[selectedLayer].setRGB(selectedColor, event.target.paletteId,
+            redSlider.value, greenSlider.value, blueSlider.value
+        );
+        redrawCanvas();
+        deselectPalette();
+        selectedPalette = event.target;
+        event.target.className = 'selectedcolor';
+    }
+}
+function deselectPalette() {
     if (selectedPalette != null) {
         selectedPalette.className = 'color'
+        selectedPalette = null;
     }
 }
 
-// Color buttons.
-function selectPalette(p, button) {
+// RGB.
+function setRGB(r, g, b) {
     if (selectedLayer != -1) {
-        layers[selectedLayer].setPalette(selectedColor, p);
-        redrawCanvas();
-        if (selectedPalette != null) {
-            selectedPalette.className = 'color';
+        if (selectedPalette == null) {
+            layers[selectedLayer].setRGB(selectedColor, -1, r, g, b);
+        } else {
+            layers[selectedLayer].setRGB(selectedColor, selectedPalette.paletteId, r, g, b);
         }
-        selectedPalette = button;
-        button.className = 'selectedcolor';
+        redrawCanvas();
+        if (r != null) redSlider.value = r;
+        if (g != null) greenSlider.value = g;
+        if (b != null) blueSlider.value = b;
     }
 }
 
-// Offset
+// Offset.
 function increaseOffset(x, y) {
     if (selectedLayer != -1) {
         layers[selectedLayer].offsetX += x;
@@ -103,7 +126,7 @@ function resetOffset() {
     }
 }
 
-// Spacing
+// Spacing.
 function increaseSpacing(x, y) {
     if (selectedLayer != -1) {
         layers[selectedLayer].spaceX += x;
@@ -119,6 +142,7 @@ function resetSpacing() {
     }
 }
 
+// Layer list
 function addLayer() {
     if (selectedAsset != null) {
         let layer = new Layer(selectedAsset, false);
@@ -266,7 +290,6 @@ function loadTemplate(event) {
             nFiles++;
             fileReader.onload = function() {
                 imgUrl.set(name.replace('.png', ''), fileReader.result);
-                console.log(name, fileReader.result);
                 nFiles--;
                 if (nFiles == 0) {
                     resetGlobals();

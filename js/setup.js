@@ -13,14 +13,12 @@ function loadPalettes(paletteImg) {
             palette.push([imgData.data[k], imgData.data[k + 1], imgData.data[k + 2]]);
         }
         palettes.push(palette);
-        const p = i;
         const button = document.createElement('img');
         let middle = palette[Math.ceil(palette.length / 2)];
+        button.paletteId = i;
         button.className = 'color';
         button.style.backgroundColor = 'rgb(' + middle.join(',') + ')';
-        button.addEventListener('click', function(event) {
-            selectPalette(p, button);
-        });
+        button.addEventListener('click', selectPalette);
         paletteButtons.append(button);
     }
 };
