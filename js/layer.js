@@ -174,6 +174,30 @@ class Layer {
         }
     }
 
+    encode() {
+        return {
+            "asset": this.asset.id,
+            "back": this.back,
+            "offsetX": this.offsetX,
+            "offsetY": this.offsetX,
+            "spaceX": this.offsetX,
+            "spaceY": this.offsetX,
+            "rgb": this.rgb,
+            "hidden": [...this.hidden],
+            "colorMap": [...this.colorMap]
+        };
+    }
+
+    decode(json) {
+        this.offsetX = json.offsetX;
+        this.offsetY = json.offsetY;
+        this.spaceX = json.spaceX;
+        this.spaceY = json.spaceY;
+        this.rgb = json.rgb;
+        this.hidden = new Set(json.hidden);
+        this.colorMap = new Map(json.colorMap);
+    }
+
 }
 
 function pixelToKey(data, i) {

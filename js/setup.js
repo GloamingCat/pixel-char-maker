@@ -135,8 +135,41 @@ function setup(settings, path) {
         for (f in settings.folders) {
             addFolder(settings.folders[f], path);
         }
-        addLayer();
+        var cache = window.localStorage.getItem("pcm_layers");
+        if (cache != null) {
+            loadLayers(cache);
+            redrawCanvas();
+        } else {
+            addLayer();
+        }
     }
+}
+
+function loadLayers(json) {
+    jsonLayers = JSON.parse(json);
+    if (jsonLayers == null) {
+        alert('Could not parse layers file ' + json);
+        return;
+    } else if (jsonLayers.length == 0) {
+        alert('Empty layer list.');
+        return;
+    }
+    layerSelector.innerHTML = '';
+    for (l in jsonLayers) {
+        let asset = document.getElementById(jsonLayers[l].asset);
+        let layer = new Layer(asset, jsonLayers[l].back);
+        layer.decode(jsonLayers[l]);
+    }
+    selectLayer(layers[0]);
+    redrawCanvas();
+}
+
+function saveLayers() {
+    let jsonLayers = [];
+    for (l in layers) {
+        jsonLayers.push(layers[l].encode());
+    }
+    return JSON.stringify(jsonLayers);
 }
 
 const xmlhttp = new XMLHttpRequest();

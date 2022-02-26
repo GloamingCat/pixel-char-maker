@@ -14,6 +14,7 @@ function redrawCanvas() {
     for(l in layers) {
         layers[l].draw(canvas.cols, canvas.rows, ctx);
     }
+    window.localStorage.setItem("pcm_layers", saveLayers());
 }
 
 // Folder of assets.
@@ -226,6 +227,8 @@ function replaceLayerImg() {
     if (selectedLayer != -1) {
         if (selectedAsset != null) {
             layers[selectedLayer].asset = selectedAsset;
+            layers[selectedLayer].refreshOption();
+            refreshColorSelector(selectedAsset);
             redrawCanvas();
         } else {
             console.log('No asset selected.');
@@ -261,6 +264,22 @@ function toggleCell(event) {
     } else {
         console.log('No layer selected.');
     }
+}
+
+function importLayers(file) {
+    let fileReader = new FileReader();
+    fileReader.onload = function() {
+        loadLayers(fileReader.result)
+    };
+    fileReader.readAsText(file);
+}
+
+function exportLayers() {
+    const file = new Blob([saveLayers()], {type: 'application/json'});
+    const downloader = document.createElement("a");
+    downloader.href = URL.createObjectURL(file);
+    downloader.download = 'pcm_layers';
+    downloader.click();
 }
 
 function loadTemplate(event) {

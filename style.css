@@ -104,11 +104,3 @@ canvas {
     display: none;
 }
 
-@media only screen and (max-width: 600px) {
-    .mobile {
-      display: inline;
-    }
-    .tooltip:hover .tooltiptext {
-        visibility: hidden;
-    }
-  }

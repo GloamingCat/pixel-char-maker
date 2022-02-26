@@ -17,7 +17,7 @@
         </div>
 
         <div class="row">   
-            <div class="group">
+            <div class="group"><div class="col">
                 Layers:<br>
                 <div class="row" id="layers">
                     <div id="layerButtons">
@@ -56,17 +56,35 @@
                     </div>
                     <select id="layerSelector" size="8"></select>
                 </div>
-            </div>
+                <button onclick="exportLayers(event)" class="tooltip">
+                    Export layers
+                    <h6 class="tooltiptext">Download a .json file with layers information.</h6>
+                </button>
+                <input id="importLayers" style="display:none" type="file" accept=".json, .png" multiple onchange="importLayers(event.target.files[0])">
+                <button onclick="document.getElementById('importLayers').click()" class="tooltip">
+                    Import layers...
+                    <h6 class="tooltiptext">Select a .json file with layers information.</h6>
+                </button>
+            </div></div>
 
             <div class="group">
                 Colors:<br>
                 <div id="colors">
-                    <select id="colorSelector"></select> <br>
-                    <div id="palettes" class="color-grid"></div>
-                    <div id="rgb" class="rgb-grid">
-                        R:<input type="range" id="redSlider" onchange="setRGB(this.value, null, null)">
-                        G:<input type="range" id="greenSlider" onchange="setRGB(null, this.value, null)">
-                        B:<input type="range" id="blueSlider" onchange="setRGB(null, null, this.value)">
+                    <div class="tooltip">
+                        <select id="colorSelector"></select>
+                        <h6 class="tooltiptext">Select colorable part.</h6>
+                    </div>
+                    <div class="tooltip">
+                        <div id="palettes" class="color-grid"></div>
+                        <h6 class="tooltiptext">Swap the palette for selected part.</h6>
+                    </div>
+                    <div class="tooltip">
+                        <div id="rgb" class="rgb-grid">
+                            R:<input type="range" id="redSlider" onchange="setRGB(this.value, null, null)">
+                            G:<input type="range" id="greenSlider" onchange="setRGB(null, this.value, null)">
+                            B:<input type="range" id="blueSlider" onchange="setRGB(null, null, this.value)">
+                        </div>
+                        <h6 class="tooltiptext">Multiply red, green and blue values for selected part.</h6>
                     </div>
                 </div>
             </div>
@@ -134,7 +152,11 @@
                 <div class="tooltip"> 
                     <canvas id="spritesheet" onclick="toggleCell(event)"></canvas>
                     <h6 class="tooltiptext">Click on cell to hide/show it.</h6>
-                </div>
+                </div><br>
+                <button class="tooltip" onclick="redrawCanvas()">
+                    Refresh
+                    <h6 class="tooltiptext">Redraw preview in case some image took too long to load.</h6>
+                </button>
             </div>
         </div>
 
