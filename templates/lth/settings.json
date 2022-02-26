@@ -1,5 +1,4 @@
 {
-    "template": "lth",
     "rows": 8,
     "cols": 3,
     "width": 72,
@@ -39,7 +38,7 @@
             ]
         }
     ],
-    "paletteFile": "palettes.png",
+    "paletteFile": "palettes",
     "nPalettes": 16,
     "nTones": 5
 }

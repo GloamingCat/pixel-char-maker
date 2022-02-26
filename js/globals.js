@@ -21,3 +21,19 @@ var selectedAsset = null;
 var selectedLayer = -1;
 var selectedColor = 0;
 var selectedPalette = null;
+
+function resetGlobals() {
+    folderStack.innerHTML = '';
+    folderButtons.innerHTML = 'Folders:';
+    layerSelector.innerHTML = '';
+    colorSelector.innerHTML = '';
+    paletteButtons.innerHTML = '';
+    palettes = [];
+    colorLists = new Map();
+    layers = [];
+    selectedFolder = null;
+    selectedAsset = null;
+    selectedLayer = -1;
+    selectedColor = 0;
+    selectedPalette = null;
+}

@@ -1,11 +1,4 @@
 
-canvas.addEventListener('click', function(event) {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    canvasClick(x, y);
-});
-
 function loadPalettes(paletteImg) {
     let canvas = document.createElement('canvas');
     canvas.width = paletteImg.width;
@@ -69,30 +62,39 @@ function addAsset(name, path, folderDiv) {
         name = name.replace('_back', '');
         back = true;
     }
+    // Get path
+    if (typeof(path) != 'string') {
+        path = path.get(name);
+    } else {
+        path += name + '.png';
+    }
+    // Create asset button
     const asset = document.createElement('img');
     asset.id = name;
     asset.className = 'asset'
-    asset.src = path + name + '.png';
-    asset.img = new Image();
-    asset.img.src = asset.src;
-    if (back) {
-        asset.back = new Image();
-        asset.back.src = path + name + '_back.png';
-    }
+    asset.src = path;
     asset.addEventListener('click', function(event) {
         selectAsset(asset);
     });
+    folderDiv.append(asset);
+    // Load all images
+    asset.img = new Image();
+    asset.img.src = asset.src;
     asset.img.onload = function() {
         colorLists.set(asset, createColorList(asset.img));
         if (name == 'Body') {
             refreshColorSelector(asset);
         }
     }
-    folderDiv.append(asset);
+    if (back) {
+        asset.back = new Image();
+        asset.back.src = path.replace('.png', '_back.png');
+    }
     return asset;
 }
 
 function addFolder(folder, path) {
+    // Create folder button
     const folderDiv = document.createElement('div');
     folderDiv.className = 'folder';
     folderStack.append(folderDiv);
@@ -102,6 +104,7 @@ function addFolder(folder, path) {
         selectFolder(folderDiv);
     });
     folderButtons.append(folderButton);
+    // Add asset buttons in the folder
     for (i in folder.assets) {
         let asset = addAsset(folder.assets[i], path, folderDiv);
         if (i == 0) {
@@ -118,16 +121,17 @@ function addFolder(folder, path) {
     return folderDiv;
 }
 
-const xmlhttp = new XMLHttpRequest();
-xmlhttp.onload = function() {
-    var settings = JSON.parse(this.responseText);
-    const path = 'templates/' + settings.template + '/';
+function setup(settings, path) {
     canvas.width = settings.width;
     canvas.height = settings.height;
     canvas.rows = settings.rows;
     canvas.cols = settings.cols;
     paletteImg = new Image();
-    paletteImg.src = path + settings.paletteFile;
+    if (typeof(path) != 'string') {
+        paletteImg.src = path.get(settings.paletteFile);
+    } else {
+        paletteImg.src += path + settings.paletteFile + '.png';
+    }
     paletteImg.onload = function() {
         loadPalettes(paletteImg);
         for (f in settings.folders) {
@@ -135,7 +139,13 @@ xmlhttp.onload = function() {
         }
         addLayer();
     }
+}
+
+const xmlhttp = new XMLHttpRequest();
+xmlhttp.onload = function() {
+    var settings = JSON.parse(this.responseText);
+    setup(settings, './templates/lth/');
 };
-xmlhttp.open('GET', 'settings-lth.json');
+xmlhttp.open('GET', './templates/lth/settings.json');
 xmlhttp.send();
 

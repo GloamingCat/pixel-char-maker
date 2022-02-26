@@ -4,6 +4,14 @@
     </head>
     <body>
 
+        <div>
+            <input id="templateButton" style="display:none" type="file" accept=".json, .png" multiple onchange="loadTemplate(event)">
+            <button onclick="document.getElementById('templateButton').click()" class="tooltip">
+                Import template...
+                <h6 class="tooltiptext">Select files for template (must include a 'settings.json' file).</h6>
+            </button>
+        </div>
+
         <div class="group">
             <div class="row">
                 <div class="col" id="folderButtons">
@@ -121,7 +129,7 @@
             <div class="group" id="canvas">
                 Preview:<br>
                 <div class="tooltip"> 
-                    <canvas id="spritesheet"></canvas>
+                    <canvas id="spritesheet" onclick="toggleCell(event)"></canvas>
                     <h6 class="tooltiptext">Click on cell to hide/show it.</h6>
                 </div>
             </div>

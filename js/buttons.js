@@ -220,8 +220,11 @@ function duplicateLayer() {
     }
 }
 
-function canvasClick(x, y) {
+function toggleCell(event) {
     if (selectedLayer != -1) {
+        const rect = event.target.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
         const w = layers[selectedLayer].asset.img.width / canvas.cols + layers[l].spaceX * 2
         const h = layers[selectedLayer].asset.img.height / canvas.rows + layers[l].spaceY * 2
         const key = Math.floor(y / h) + "_" + Math.floor(x / w);
@@ -234,4 +237,48 @@ function canvasClick(x, y) {
     } else {
         console.log('No layer selected.');
     }
+}
+
+function loadTemplate(event) {
+    const files = event.target.files;
+    var settings = null;
+    const imgUrl = new Map();
+    var nFiles = 0;
+    for (f in files) {
+        const name = files[f].name;
+        let fileReader = new FileReader();
+        if (files[f].type == 'application/json') {
+            nFiles++;
+            settings = true;
+            fileReader.onload = function() {
+                settings = JSON.parse(fileReader.result);
+                if (settings == null) {
+                    console.log('Could not parse settings file ' + name);
+                }
+                nFiles--;
+                if (nFiles == 0) {
+                    resetGlobals();
+                    setup(settings, imgUrl);
+                }
+            };
+            fileReader.readAsText(files[f]);
+        } else if (files[f].type == 'image/png') {
+            nFiles++;
+            fileReader.onload = function() {
+                imgUrl.set(name.replace('.png', ''), fileReader.result);
+                console.log(name, fileReader.result);
+                nFiles--;
+                if (nFiles == 0) {
+                    resetGlobals();
+                    setup(settings, imgUrl);
+                }
+            }
+            fileReader.readAsDataURL(files[f]);
+        }
+    }
+    if (settings == null) {
+        console.log('Could not find json settings file.');
+        return;
+    }
+    
 }
