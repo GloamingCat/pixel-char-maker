@@ -4,13 +4,8 @@
     </head>
     <body>
 
-        <div>
-            <input id="templateButton" style="display:none" type="file" accept=".json, .png" multiple onchange="loadTemplate(event)">
-            <button onclick="document.getElementById('templateButton').click()" class="tooltip">
-                Import template...
-                <h6 class="tooltiptext">Select files for template (must include a 'settings.json' file).</h6>
-            </button>
-        </div>
+        <h1>Pixel Character Maker</h1>
+        <h1 class="mobile">This website sucks hard on mobile devices, please use it from a desktop browser!<br></h1>
 
         <div class="group">
             <div class="row">
@@ -75,7 +70,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="group"><div class="col">
                 <div>
                     Offset:
@@ -141,6 +136,83 @@
                     <h6 class="tooltiptext">Click on cell to hide/show it.</h6>
                 </div>
             </div>
+        </div>
+
+        <div>
+            <input id="templateButton" style="display:none" type="file" accept=".json, .png" multiple onchange="loadTemplate(event)">
+            <button onclick="document.getElementById('templateButton').click()" class="tooltip">
+                Import template...
+                <h6 class="tooltiptext">Select files for template (must include a 'settings.json' file).</h6>
+            </button>
+        </div>
+
+        <div>
+            <h2>Instructions:</h2>
+            <ol>
+                <li>Click on a folder button to see its assets.</li>
+                <li>Click on an asset image to select it (you will see a black border around the selected one).</li>
+                <li>Click on the <img src="img/add.png"> button next to the layer list. 
+                    This will add a new layer at the top of the list with the selected asset 
+                    (sometimes it also adds a layer at the bottom, in case the assets has a "back" image).</li>
+                <li>You can delete <img src="img/delete.png"> and reorder <img src="img/up.png"><img src="img/down.png"> layers freely, 
+                    and also duplicate <img src="img/duplicate.png"> layers with the button next to the layer list.</li>
+                <li>You can also replace <img src="img/replace.png"> the asset of a layer 
+                    (note: if a layer is a "back" type, it will always load the back image, you can't change this).</li>
+                <li>Choose the colorable part of the asset (the selector with Color 1, Color 2, etc). 
+                    Each part has an independent color. The number of parts depends on the selected layer.</li>
+                <li>Click on the color squares to select a palette. Each palette was a fixed number of tones, 
+                    and the tones are swapped when you select a palette.</li>
+                <li>Use the RGB sliders to adjust the color of the selected part, if needed (you can use that to make it darker).</li>
+                <li>Move each layer around by changing the offset.</li>
+                <li>Increase the space between sprites by changing the horizontal and vertical spacing.</li>
+                <li>Click on a specific cell in the preview to hide/show it. It only affects the selected layer. </li>
+                <li>When done, simply save the preview image.</li>
+            </ol>
+
+            For IT people, see more at https://github.com/GloamingCat/pixel-char-maker/.
+
+            <h2>Creating Templates:</h2>
+            If you want to make your own template, I recommend you to download and unzip the project from
+            https://github.com/GloamingCat/pixel-char-maker/archive/refs/heads/main.zip, then copy the "templates/lth" folder 
+            and start from there by modifying the "settings.json" file and adding new assets.
+            <br>
+            Templates for sprites are configurable with the following attributes:
+            <ul>
+                <li>rows: how many rows are in the spritesheet (4 if you are using templates from RPG Maker VX or newer);</li>
+                <li>cols: how many columns are in the spritesheet (3 if you are using templates from RPG Maker VX or newer);</li>
+                <li>width: total width of the template image;</li>
+                <li>height: total height of the template image;</li>
+                <li>paletteFile: name of the PNG file with the tones for each palette (do not include '.png' in the name). 
+                    The file is mandatory, but if you do not want to use the palette system, just put a single-pixel image there;</li>
+                <li>folders: list of categories for layers. For each folder we have the following attributes:
+                    <li>name: name of the folder. Only used to display;</li>
+                    <li>assets: list of PNG files in this folder (do not include '.png' in the name). 
+                        If it ends with '_back', then this assets has to layers, one for the front and one for the back. 
+                        In this case, the back image must have the same name as the front image except for '_back' in the end 
+                        (ONLY include the name of the back image in the asset list in this case.)</li>
+                </li>
+            </ul>
+            Once it's done, click on the 'Import template' button and selected ALL files in the template folder, including .png and .json files. 
+
+            <h2>Limitations:</h2>
+
+            For templates:
+            <ul>
+                <li>All assets (clothes, body, etc) must have the same size;</li>
+                <li>All images (assets and palettes) must be in the same folder as the settings.json file;</li>
+                <li>Sprites must be equally spaced.</li>
+            </ul>
+            
+            For palettes:
+            <ul>
+                <li>You can only swap palettes for a part of the layer image if these colors are included in the palette image ("palettes.png"). 
+                    You can use an asset with a new color set that isn't in the palette image, but you cant swap its palette;</li>
+                <li>All palettes must have the same number of tones (it is okay to repeat tones in the same palette to fill in the number, though);</li>
+                <li>If an asset contains two colors (for example, a striped shirt) these two parts MUST have two different palettes in the image, 
+                    otherwise they won't be interpreted as separated parts;</li>
+                <li>Do not use two different palettes with a tone in common, otherwise the program won't me able to identify each palette does that tone belong to. 
+                    If you need to, use almost-equal colors, but not the exact same.</li>
+            </ul>
         </div>
 
         <script src="js/globals.js"></script>
