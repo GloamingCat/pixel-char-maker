@@ -82,14 +82,22 @@ function setRGB(r, g, b) {
 
 // Spacing and offset.
 function increaseField(field, x, y) {
-    if (selectedLayer != -1) {
+    if (allLayersBox.checked) {
+        layerList.increaseLayerValue(-1, field + 'X', x);
+        layerList.increaseLayerValue(-1, field + 'Y', y);
+        preview.redrawCanvas();
+    } else if (selectedLayer != -1) {
         layerList.increaseLayerValue(selectedLayer, field + 'X', x);
         layerList.increaseLayerValue(selectedLayer, field + 'Y', y);
         preview.redrawCanvas();
     }
 }
 function resetField(field) {
-    if (selectedLayer != -1) {
+    if (allLayersBox.checked) {
+        layerList.setLayerValue(-1, field + 'X', 0);
+        layerList.setLayerValue(-1, field + 'Y', 0);
+        preview.redrawCanvas();
+    } else if (selectedLayer != -1) {
         layerList.setLayerValue(selectedLayer, field + 'X', 0);
         layerList.setLayerValue(selectedLayer, field + 'Y', 0);
         preview.redrawCanvas();

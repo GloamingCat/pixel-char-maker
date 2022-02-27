@@ -47,11 +47,23 @@ class LayerList {
     }
 
     setLayerValue(layerId, key, value) {
-        this.layers[layerId][key] = value;
+        if (layerId == -1) {
+            for (let l in this.layers) {
+                this.layers[l][key] = value;
+            }
+        } else {
+            this.layers[layerId][key] = value;
+        }
     }
 
     increaseLayerValue(layerId, key, value) {
-        this.layers[layerId][key] += value;
+        if (layerId == -1) {
+            for (let l in this.layers) {
+                this.layers[l][key] += value;
+            }
+        } else {
+            this.layers[layerId][key] += value;
+        }
     }
  
     draw(cols, rows, ctx) {
@@ -76,6 +88,7 @@ class LayerList {
     createLayer(asset, back) {
         const layer = new Layer(this.layers.length, asset, back);
         this.layers.push(layer);
+        layer.refreshOption();
         return layer;
     }
 

@@ -26,7 +26,7 @@ class Layer {
     }
 
     refreshOption() {
-        this.option.value = '' + this.id;
+        this.option.value = this.id;
         if (this.back) {
             this.option.innerHTML = this.asset.id + ' - back';
         } else {

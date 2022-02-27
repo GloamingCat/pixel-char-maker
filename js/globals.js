@@ -9,6 +9,7 @@ var paletteButtons = document.getElementById('palettes');
 var redSlider = document.getElementById('redSlider');
 var greenSlider = document.getElementById('greenSlider');
 var blueSlider = document.getElementById('blueSlider');
+var allLayersBox = document.getElementById('allLayers');
 var canvas = document.getElementById('spritesheet');
 var anim = document.getElementById('animation');
 

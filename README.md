@@ -9,8 +9,3 @@ This is a pure Javascript + HTML website to create sprite characters. For instru
 3) Open the index.html file.
 
 Note: for non-IT people, this program CANNOT be executed locally for security reasons. You need to start a local server. So if you want to make your own version of it, either learn how to do that OR re-upload the files somewhere.
-
-## Future Features
-
-* Export the configuration of the layers in a .json file.
-* Make a decent mobile version.
