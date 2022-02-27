@@ -12,26 +12,16 @@ var blueSlider = document.getElementById('blueSlider');
 var canvas = document.getElementById('spritesheet');
 var anim = document.getElementById('animation');
 
-// Settings
-
-var palettes = [];
-var colorLists = new Map();
-
 // State
 
-var layers = [];
-var selectedFolder = null;
-var selectedAsset = null;
-var selectedLayer = -1;
-var selectedColor = -1;
-var selectedPalette = null;
-
-// Animations
-
-var lastRow = 0;
-var lastFrame = 0;
-var animInterval = 0;
-var animPattern = [];
+var preview;
+var paletteSet;
+var layerList;
+var selectedFolder;
+var selectedAsset;
+var selectedLayer;
+var selectedColor;
+var selectedPalette;
 
 function resetGlobals() {
     folderStack.innerHTML = '';
@@ -39,9 +29,11 @@ function resetGlobals() {
     layerSelector.innerHTML = '';
     colorSelector.innerHTML = '';
     paletteButtons.innerHTML = '';
-    palettes = [];
-    colorLists = new Map();
-    layers = [];
+    paletteSet = new PaletteSet();
+    layerList = new LayerList();
+    if (preview != null)
+        preview.stopAnim();
+    preview = new Preview();
     selectedFolder = null;
     selectedAsset = null;
     selectedLayer = -1;

@@ -54,7 +54,7 @@
                             <h6 class="tooltiptext">Duplicate selected layer.</h6>
                         </button><br>
                     </div>
-                    <select id="layerSelector" size="8"></select>
+                    <select id="layerSelector" size="8" onchange="onLayerSelect(this.value)"></select>
                 </div>
                 <button onclick="exportLayers(event)" class="tooltip">
                     Export layers
@@ -80,9 +80,9 @@
                     </div>
                     <div class="tooltip">
                         <div id="rgb" class="rgb-grid">
-                            R:<input type="range" id="redSlider" onchange="setRGB(this.value, null, null)">
-                            G:<input type="range" id="greenSlider" onchange="setRGB(null, this.value, null)">
-                            B:<input type="range" id="blueSlider" onchange="setRGB(null, null, this.value)">
+                            R:<input type="range" value=100 id="redSlider" onchange="setRGB(this.value, null, null)">
+                            G:<input type="range" value=100 id="greenSlider" onchange="setRGB(null, this.value, null)">
+                            B:<input type="range" value=100 id="blueSlider" onchange="setRGB(null, null, this.value)">
                         </div>
                         <h6 class="tooltiptext">Multiply red, green and blue values for selected part.</h6>
                     </div>
@@ -92,26 +92,26 @@
             <div class="group"><div class="col">
                 <div>
                     Offset:
-                    <button class="tooltip" onclick="resetOffset()">
+                    <button class="tooltip" onclick="resetField('offset')">
                         Reset
                         <h6 class="tooltiptext">Move selected layer back to center.</h6>
                     </button>
                     <div class="button-grid">
                         <div class="grid-item"></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseOffset(0,-1)">
+                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 0,-1)">
                             <img src="img/up.png">
                             <h6 class="tooltiptext">Move selected layer up.</h6>
                             </button></div>
                         <div class="grid-item"></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseOffset(-1,0)">
+                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', -1,0)">
                             <img src="img/left.png">
                             <h6 class="tooltiptext">Move selected layer left.</h6>
                             </button></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseOffset(0,1)">
+                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 0,1)">
                             <img src="img/down.png">
                             <h6 class="tooltiptext">Move selected layer down.</h6>
                             </button></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseOffset(1,0)">
+                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 1,0)">
                             <img src="img/right.png">
                             <h6 class="tooltiptext">Move selected layer right.</h6>
                             </button></div>
@@ -120,26 +120,26 @@
                 <br>
                 <div>
                     Spacing:
-                    <button class="tooltip" onclick="resetSpacing()">
+                    <button class="tooltip" onclick="resetField('space')">
                         Reset
                         <h6 class="tooltiptext">Reset horizontal and vertical spacing of selected layer.</h6>
                     </button>
                     <div class="button-grid">
                         <div>H:</div>
-                        <button class="tooltip" onclick="increaseSpacing(1,0)">
+                        <button class="tooltip" onclick="increaseField('space', 1,0)">
                             <img src="img/add.png">
                             <h6 class="tooltiptext">Increase horizontal spacing of selected layer.</h6>
                         </button>
-                        <button class="tooltip" onclick="increaseSpacing(-1,0)">
+                        <button class="tooltip" onclick="increaseField('space', -1,0)">
                             <img src="img/delete.png">
                             <h6 class="tooltiptext">Decrease horizontal spacing of selected layer.</h6>
                         </button>
                         <div>V:</div>
-                        <button class="tooltip" onclick="increaseSpacing(0,1)">
+                        <button class="tooltip" onclick="increaseField('space', 0,1)">
                             <img src="img/add.png">
                             <h6 class="tooltiptext">Increase vertical spacing of selected layer.</h6>
                         </button>
-                        <button class="tooltip" onclick="increaseSpacing(0,-1)">
+                        <button class="tooltip" onclick="increaseField('space', 0,-1)">
                             <img src="img/delete.png">
                             <h6 class="tooltiptext">Decrease vertical spacing of selected layer.</h6>
                         </button>
@@ -156,7 +156,7 @@
                     </div>
                     <canvas id="animation"></canvas>
                 </div><br>
-                <button class="tooltip" onclick="redrawCanvas()">
+                <button class="tooltip" onclick="preview.refresh()">
                     Refresh
                     <h6 class="tooltiptext">Redraw preview in case some image took too long to load.</h6>
                 </button>
@@ -164,12 +164,22 @@
         </div>
 
         <div>
-            <input id="templateButton" style="display:none" type="file" accept=".json, .png" multiple onchange="loadTemplate(event)">
+            <input id="templateButton" style="display:none" type="file" accept=".json, .png" multiple onchange="importTemplate(event)">
             <button onclick="document.getElementById('templateButton').click()" class="tooltip">
                 Import template...
                 <h6 class="tooltiptext">Select files for template (must include a 'settings.json' file).</h6>
             </button>
         </div>
+
+        <script src="js/colormap.js"></script>
+        <script src="js/paletteset.js"></script>
+        <script src="js/preview.js"></script>
+        <script src="js/layer.js"></script>
+        <script src="js/layerlist.js"></script>
+        <script src="js/buttons.js"></script>
+        <script src="js/globals.js"></script>
+        <script src="js/setup.js"></script>
+        <script>new Setup().loadDefault('lth')</script>
 
         <div>
             <h2>Instructions:</h2>
@@ -240,9 +250,5 @@
             </ul>
         </div>
 
-        <script src="js/globals.js"></script>
-        <script src="js/layer.js"></script>
-        <script src="js/buttons.js"></script>
-        <script src="js/setup.js"></script>
     </body>
 </html>
