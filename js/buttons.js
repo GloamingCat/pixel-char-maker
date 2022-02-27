@@ -9,10 +9,12 @@ function redrawCanvas() {
     }
     canvas.width = maxW;
     canvas.height = maxH;
-    var ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, maxW, maxH);
-    for(l in layers) {
-        layers[l].draw(canvas.cols, canvas.rows, ctx);
+    if (maxW > 0 && maxH > 0) {
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, maxW, maxH);
+        for(l in layers) {
+            layers[l].draw(canvas.cols, canvas.rows, ctx);
+        }
     }
     window.localStorage.setItem("pcm_layers", saveLayers());
 }
@@ -24,14 +26,16 @@ function redrawAnim() {
             lastRow = 0;
         }
     }
-    var w = canvas.width / canvas.cols;
-    var h = canvas.height / canvas.rows;
-    anim.width = w * 2;
-    anim.height = canvas.height;
-    var ctx = anim.getContext('2d');
-    ctx.clearRect(0, 0, anim.width, anim.height);
-    ctx.drawImage(canvas, w * animPattern[lastFrame], 0, w, canvas.height, 0, 0, w, canvas.height);
-    ctx.drawImage(canvas, w * animPattern[lastFrame], h * lastRow, w, h, w, 0, w, h);
+    if (canvas.width > 0 && canvas.height > 0) {
+        var w = canvas.width / canvas.cols;
+        var h = canvas.height / canvas.rows;
+        anim.width = w * 2;
+        anim.height = canvas.height;
+        var ctx = anim.getContext('2d');
+        ctx.clearRect(0, 0, anim.width, anim.height);
+        ctx.drawImage(canvas, w * animPattern[lastFrame], 0, w, canvas.height, 0, 0, w, canvas.height);
+        ctx.drawImage(canvas, w * animPattern[lastFrame], h * lastRow, w, h, w, 0, w, h);
+    }
     lastFrame += 1;
     if (animInterval > 0) {
         setTimeout(redrawAnim, animInterval);
