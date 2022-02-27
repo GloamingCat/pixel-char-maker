@@ -118,6 +118,11 @@
                     </div>
                 </div>
                 <br>
+                <button class="tooltip" onclick="flipCells()">
+                    Flip cells
+                    <h6 class="tooltiptext">Flip horizontally each individual cell of the selected layer.</h6>
+                </button>
+                <br>
                 <div>
                     Spacing:
                     <button class="tooltip" onclick="resetField('space')">
@@ -149,7 +154,7 @@
                 <div class="tooltip">
                     <input type="checkbox" id="allLayers">
                     All layers
-                    <h6 class="tooltiptext">Apply offset/spacing modifications to all layers.</h6>
+                    <h6 class="tooltiptext">Apply offset/flip/spacing modifications to all layers.</h6>
                 </div>
             </div></div>
 
@@ -226,6 +231,7 @@
                     and the tones are swapped when you select a palette.</li>
                 <li>Use the RGB sliders to adjust the color of the selected part, if needed (you can use that to make it darker).</li>
                 <li>Move each layer around by changing the offset. Check the "All layers" box to affect all layers.</li>
+                <li>The "Flip cells" button flips horizontally each individual cell of the selected layer. Check the "All layers" box to flip all layers.</li>
                 <li>Increase the space between sprites by changing the horizontal and vertical spacing. Check the "All layers" box to affect all layers.</li>
                 <li>Click on a specific cell in the preview to hide/show it. It only affects the selected layer. The "Show all" and "Hide all" buttons are there as a shortcut for this.</li>
                 <li>Increase/decrease animation preview speed with the buttons next to the "Refresh" button.</li>

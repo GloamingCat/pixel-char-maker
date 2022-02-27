@@ -8,6 +8,7 @@ class Layer {
         this.offsetY = 0;
         this.spaceX = 0;
         this.spaceY = 0;
+        this.flip = false;
         this.hidden = new Set();
         this.colorMap = new ColorMap();
         this.rgb = [1.0, 1.0, 1.0];
@@ -81,6 +82,7 @@ class Layer {
         let offsetY = other.offsetY;
         let spaceX = other.spaceX;
         let spaceY = other.spaceY;
+        let flip = other.flip;
         let hidden = other.hidden;
         let colorMap = other.colorMap;
         let rgb = other.rgb;
@@ -90,6 +92,7 @@ class Layer {
         other.offsetY = this.offsetY;
         other.spaceX = this.spaceX;
         other.spaceY = this.spaceY;
+        other.flip = this.flip;
         other.hidden = this.hidden;
         other.colorMap = this.colorMap;
         other.rgb = this.rgb;
@@ -99,6 +102,7 @@ class Layer {
         this.offsetY = offsetY;
         this.spaceX = spaceX;
         this.spaceY = spaceY;
+        this.flip = flip;
         this.hidden = hidden;
         this.colorMap = colorMap;
         this.rgb = rgb;
@@ -121,12 +125,26 @@ class Layer {
         assetCtx.putImageData(imgData, 0, 0);
         var sw = img.width / cols;
         var sh = img.height / rows;
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < cols; j++) {
-                if (!this.hidden.has(i + "_" + j)) {
-                    var x = this.offsetX + sw * j + this.spaceX * (j + 1) + this.spaceX * j;
-                    var y = this.offsetY + sh * i + this.spaceY * (i + 1) + this.spaceY * i;
-                    ctx.drawImage(assetCanvas, sw * j, sh * i, sw, sh, x, y, sw, sh);
+        if (this.flip) {
+            ctx.scale(-1, 1);
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    if (!this.hidden.has(i + "_" + j)) {
+                        var x = this.offsetX + sw * j + this.spaceX * (j + 1) + this.spaceX * j;
+                        var y = this.offsetY + sh * i + this.spaceY * (i + 1) + this.spaceY * i;
+                        ctx.drawImage(assetCanvas, sw * j, sh * i, sw, sh, -sw-x, y, sw, sh);
+                    }
+                }
+            }
+            ctx.resetTransform();
+        } else {
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    if (!this.hidden.has(i + "_" + j)) {
+                        var x = this.offsetX + sw * j + this.spaceX * (j + 1) + this.spaceX * j;
+                        var y = this.offsetY + sh * i + this.spaceY * (i + 1) + this.spaceY * i;
+                        ctx.drawImage(assetCanvas, sw * j, sh * i, sw, sh, x, y, sw, sh);
+                    }
                 }
             }
         }
@@ -140,6 +158,7 @@ class Layer {
             "offsetY": this.offsetY,
             "spaceX": this.spaceX,
             "spaceY": this.spaceY,
+            "flip": this.flip,
             "rgb": this.rgb,
             "hidden": [...this.hidden],
             "colorMap": this.colorMap.encode()
@@ -151,6 +170,7 @@ class Layer {
         this.offsetY = json.offsetY;
         this.spaceX = json.spaceX;
         this.spaceY = json.spaceY;
+        this.flip = json.flip;
         this.rgb = json.rgb;
         this.hidden = new Set(json.hidden);
         this.colorMap.decode(json.colorMap);

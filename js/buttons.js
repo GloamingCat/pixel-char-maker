@@ -103,6 +103,15 @@ function resetField(field) {
         preview.redrawCanvas();
     }
 }
+function flipCells() {
+    if (allLayersBox.checked) {
+        layerList.invertLayerValue(-1, 'flip');
+        preview.redrawCanvas();
+    } else if (selectedLayer != -1) {
+        layerList.invertLayerValue(selectedLayer, 'flip');
+        preview.redrawCanvas();
+    }
+}
 
 function onLayerSelect(layerId) {
     selectedLayer = parseInt(layerId);

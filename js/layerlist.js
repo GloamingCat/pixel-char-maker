@@ -78,6 +78,16 @@ class LayerList {
             this.layers[layerId][key] += value;
         }
     }
+
+    invertLayerValue(layerId, key) {
+        if (layerId == -1) {
+            for (let l in this.layers) {
+                this.layers[l][key] = !this.layers[l][key];
+            }
+        } else {
+            this.layers[layerId][key] = !this.layers[layerId][key];
+        }
+    }
  
     draw(cols, rows, ctx) {
         for (let l in this.layers) {
