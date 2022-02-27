@@ -143,6 +143,11 @@ function setup(settings, path) {
             addLayer();
         }
     }
+    animInterval = settings.interval;
+    animPattern = settings.animation;
+    if (settings.interval > 0) {
+        setTimeout(redrawAnim, animInterval);
+    }
 }
 
 function loadLayers(json) {

@@ -149,9 +149,12 @@
 
             <div class="group" id="canvas">
                 Preview:<br>
-                <div class="tooltip"> 
-                    <canvas id="spritesheet" onclick="toggleCell(event)"></canvas>
-                    <h6 class="tooltiptext">Click on cell to hide/show it.</h6>
+                <div class="row">
+                    <div class="tooltip"> 
+                        <canvas id="spritesheet" onclick="toggleCell(event)"></canvas>
+                        <h6 class="tooltiptext">Click on cell to hide/show it.</h6>
+                    </div>
+                    <canvas id="animation"></canvas>
                 </div><br>
                 <button class="tooltip" onclick="redrawCanvas()">
                     Refresh

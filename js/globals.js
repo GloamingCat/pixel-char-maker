@@ -10,6 +10,7 @@ var redSlider = document.getElementById('redSlider');
 var greenSlider = document.getElementById('greenSlider');
 var blueSlider = document.getElementById('blueSlider');
 var canvas = document.getElementById('spritesheet');
+var anim = document.getElementById('animation');
 
 // Settings
 
@@ -25,6 +26,12 @@ var selectedLayer = -1;
 var selectedColor = -1;
 var selectedPalette = null;
 
+// Animations
+
+var lastFrame = 0;
+var animInterval = 0;
+var animPattern = [];
+
 function resetGlobals() {
     folderStack.innerHTML = '';
     folderButtons.innerHTML = 'Folders:';
@@ -39,4 +46,6 @@ function resetGlobals() {
     selectedLayer = -1;
     selectedColor = -1;
     selectedPalette = null;
+    lastFrame = 0;
+    animInterval = 0;
 }

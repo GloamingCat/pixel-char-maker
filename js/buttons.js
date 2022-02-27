@@ -16,6 +16,20 @@ function redrawCanvas() {
     }
     window.localStorage.setItem("pcm_layers", saveLayers());
 }
+function redrawAnim() {
+    if (lastFrame >= animPattern.length) {
+        lastFrame = 0;
+    }
+    anim.width = canvas.width / canvas.cols;
+    anim.height = canvas.height;
+    var ctx = anim.getContext('2d');
+    ctx.clearRect(0, 0, anim.width, anim.height);
+    ctx.drawImage(canvas, anim.width * animPattern[lastFrame], 0, anim.width, anim.height, 0, 0, anim.width, anim.height);
+    lastFrame += 1;
+    if (animInterval > 0) {
+        setTimeout(redrawAnim, animInterval);
+    }
+}
 
 // Folder of assets.
 function selectFolder(folderDiv) {

@@ -38,5 +38,7 @@
                 "Glasses"
             ]
         }
-    ]
+    ],
+    "animation": [0, 1, 2, 1],
+    "interval": 250
 }
