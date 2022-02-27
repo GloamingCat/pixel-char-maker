@@ -163,6 +163,16 @@
                     <canvas id="animation"></canvas>
                 </div><br>
                 <div>
+                    <button class="tooltip" onclick="showAllCells()">
+                        Show all
+                        <h6 class="tooltiptext">Show all cells of the selected layer.</h6>
+                    </button>
+                    <button class="tooltip" onclick="hideAllCells()">
+                        Hide all
+                        <h6 class="tooltiptext">Hide all cells of the selected layer.</h6>
+                    </button>
+                </div>
+                <div>
                     <button class="tooltip" onclick="preview.refresh()">
                         Refresh
                         <h6 class="tooltiptext">Redraw preview in case some image took too long to load.</h6>
@@ -217,7 +227,7 @@
                 <li>Use the RGB sliders to adjust the color of the selected part, if needed (you can use that to make it darker).</li>
                 <li>Move each layer around by changing the offset. Check the "All layers" box to affect all layers.</li>
                 <li>Increase the space between sprites by changing the horizontal and vertical spacing. Check the "All layers" box to affect all layers.</li>
-                <li>Click on a specific cell in the preview to hide/show it. It only affects the selected layer.</li>
+                <li>Click on a specific cell in the preview to hide/show it. It only affects the selected layer. The "Show all" and "Hide all" buttons are there as a shortcut for this.</li>
                 <li>Increase/decrease animation preview speed with the buttons next to the "Refresh" button.</li>
                 <li>When done, simply save the preview image. Press the "Refresh" button before that just to make sure.</li>
             </ol>

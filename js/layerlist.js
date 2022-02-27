@@ -46,6 +46,19 @@ class LayerList {
         this.layers[layerId].toggleVisibility(Math.floor(x / w), Math.floor(y / h));
     }
 
+    showCells(layerId) {
+        this.layers[layerId].hidden = new Set();
+    }
+
+    hideCells(layerId, cols, rows) {
+        this.layers[layerId].hidden = new Set();
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                this.layers[layerId].toggleVisibility(j, i);
+            }
+        }
+    }
+
     setLayerValue(layerId, key, value) {
         if (layerId == -1) {
             for (let l in this.layers) {

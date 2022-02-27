@@ -218,6 +218,24 @@ function toggleCell(event) {
     }
 }
 
+function showAllCells() {
+    if (selectedLayer != -1) {
+        layerList.showCells(selectedLayer);
+        preview.redrawCanvas();
+    } else {
+        console.log('No layer selected.');
+    }
+}
+
+function hideAllCells() {
+    if (selectedLayer != -1) {
+        layerList.hideCells(selectedLayer, canvas.cols, canvas.rows);
+        preview.redrawCanvas();
+    } else {
+        console.log('No layer selected.');
+    }
+}
+
 function importLayers(file) {
     let fileReader = new FileReader();
     fileReader.onload = function() {
