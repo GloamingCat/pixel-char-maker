@@ -28,6 +28,7 @@ var selectedPalette = null;
 
 // Animations
 
+var lastRow = 0;
 var lastFrame = 0;
 var animInterval = 0;
 var animPattern = [];
@@ -47,5 +48,6 @@ function resetGlobals() {
     selectedColor = -1;
     selectedPalette = null;
     lastFrame = 0;
+    lastRow = 0;
     animInterval = 0;
 }

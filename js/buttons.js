@@ -19,12 +19,19 @@ function redrawCanvas() {
 function redrawAnim() {
     if (lastFrame >= animPattern.length) {
         lastFrame = 0;
+        lastRow += 1;
+        if (lastRow >= canvas.rows) {
+            lastRow = 0;
+        }
     }
-    anim.width = canvas.width / canvas.cols;
+    var w = canvas.width / canvas.cols;
+    var h = canvas.height / canvas.rows;
+    anim.width = w * 2;
     anim.height = canvas.height;
     var ctx = anim.getContext('2d');
     ctx.clearRect(0, 0, anim.width, anim.height);
-    ctx.drawImage(canvas, anim.width * animPattern[lastFrame], 0, anim.width, anim.height, 0, 0, anim.width, anim.height);
+    ctx.drawImage(canvas, w * animPattern[lastFrame], 0, w, canvas.height, 0, 0, w, canvas.height);
+    ctx.drawImage(canvas, w * animPattern[lastFrame], h * lastRow, w, h, w, 0, w, h);
     lastFrame += 1;
     if (animInterval > 0) {
         setTimeout(redrawAnim, animInterval);
