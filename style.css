@@ -31,9 +31,15 @@ canvas {
     visibility: visible;
 }
 
+.row-scroll {
+    display: flex;
+    flex-direction: row;
+}
+
 .row {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .col {
@@ -50,12 +56,16 @@ canvas {
 .color-grid {
     display: grid;
     gap: 2px 2px;
-    grid-template-columns: auto auto auto auto auto;
+    grid-template-columns: auto auto auto auto;
 }
 
 .rgb-grid {
     display: grid;
     grid-template-columns: auto auto;
+}
+
+#folderStack {
+    overflow: auto;
 }
 
 .group {
@@ -85,16 +95,16 @@ canvas {
 }
 
 .color {
-    width:24px;
-    height:24px;
+    width:32px;
+    height:32px;
     border-width: 2px;
     border-style: solid;
     border-color: lightblue;
 }
 
 .selectedcolor {
-    width:24px;
-    height:24px;
+    width:32px;
+    height:32px;
     border-width: 2px;
     border-style: solid;
     border-color: black;
