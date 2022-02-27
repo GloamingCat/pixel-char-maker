@@ -6,6 +6,24 @@ class Preview {
         this.interval = 0;
         this.pattern = [];
         this.timeoutId = null;
+        this.speedLevels = [0.25, 0.5, 0.75, 1, 1.5, 2, 4];
+        this.speed = 3;
+    }
+
+    increaseSpeed() {
+        if (this.speed < this.speedLevels.length - 1) {
+            this.stopAnim();
+            this.speed++;
+            this.startAnim();
+        }
+    }
+
+    decreaseSpeed() {
+        if (this.speed > 0) {
+            this.stopAnim();
+            this.speed--;
+            this.startAnim();
+        }
     }
 
     setAnim(interval, pattern) {
@@ -54,7 +72,7 @@ class Preview {
 
     startAnim() {
         if (this.interval > 0) {
-            this.timeoutId = setTimeout(this.redrawAnim.bind(this), this.interval);
+            this.timeoutId = setTimeout(this.redrawAnim.bind(this), this.interval / this.speedLevels[this.speed]);
         }
     }
 
@@ -67,6 +85,7 @@ class Preview {
 
     refresh() {
         this.stopAnim();
+        this.speed = 3;
         this.redrawCanvas();
         this.startAnim();
     }

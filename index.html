@@ -156,10 +156,20 @@
                     </div>
                     <canvas id="animation"></canvas>
                 </div><br>
-                <button class="tooltip" onclick="preview.refresh()">
-                    Refresh
-                    <h6 class="tooltiptext">Redraw preview in case some image took too long to load.</h6>
-                </button>
+                <div>
+                    <button class="tooltip" onclick="preview.refresh()">
+                        Refresh
+                        <h6 class="tooltiptext">Redraw preview in case some image took too long to load.</h6>
+                    </button>
+                    <button class="tooltip" onclick="preview.decreaseSpeed()">
+                        &lt&lt
+                        <h6 class="tooltiptext">Decrease animation speed.</h6>
+                    </button>
+                    <button class="tooltip" onclick="preview.increaseSpeed()">
+                        &gt&gt
+                        <h6 class="tooltiptext">Increase animation speed.</h6>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -184,13 +194,14 @@
         <div>
             <h2>Instructions:</h2>
             <ol>
+                <li>If you used this website before, press the "Refresh" button below "Preview" to reload the images from the stored layers.</li>
                 <li>Click on a folder button to see its assets.</li>
                 <li>Click on an asset image to select it (you will see a black border around the selected one).</li>
                 <li>Click on the <img src="img/add.png"> button next to the layer list. 
                     This will add a new layer at the top of the list with the selected asset 
                     (sometimes it also adds a layer at the bottom, in case the assets has a "back" image).</li>
                 <li>You can delete <img src="img/delete.png"> and reorder <img src="img/up.png"><img src="img/down.png"> layers freely, 
-                    and also duplicate <img src="img/duplicate.png"> layers with the button next to the layer list.</li>
+                    and also duplicate <y src="img/duplicate.png"> layers with the button next to the layer list.</li>
                 <li>You can also replace <img src="img/replace.png"> the asset of a layer 
                     (note: if a layer is a "back" type, it will always load the back image, you can't change this).</li>
                 <li>Choose the colorable part of the asset (the selector with Color 1, Color 2, etc). 
@@ -200,31 +211,34 @@
                 <li>Use the RGB sliders to adjust the color of the selected part, if needed (you can use that to make it darker).</li>
                 <li>Move each layer around by changing the offset.</li>
                 <li>Increase the space between sprites by changing the horizontal and vertical spacing.</li>
-                <li>Click on a specific cell in the preview to hide/show it. It only affects the selected layer. </li>
-                <li>When done, simply save the preview image.</li>
+                <li>Click on a specific cell in the preview to hide/show it. It only affects the selected layer.</li>
+                <li>Increase/decrease animation preview speed with the buttons next to the "Refresh" button.</li>
+                <li>When done, simply save the preview image. Press the "Refresh" button before that just to make sure.</li>
             </ol>
 
-            For IT people, see more at https://github.com/GloamingCat/pixel-char-maker/.
+            For IT people, see more at the <a href="https://github.com/GloamingCat/pixel-char-maker/">project's repository</a>.
 
             <h2>Creating Templates:</h2>
-            If you want to make your own template, I recommend you to download and unzip the project from
-            https://github.com/GloamingCat/pixel-char-maker/archive/refs/heads/main.zip, then copy the "templates/lth" folder 
+            If you want to make your own template, I recommend you to download and unzip the project's lattest version from
+            the <a href=https://github.com/GloamingCat/pixel-char-maker/archive/refs/heads/main.zip>repository</a>, then copy the "templates/lth" folder 
             and start from there by modifying the "settings.json" file and adding new assets.
             <br>
             Templates for sprites are configurable with the following attributes:
             <ul>
-                <li>rows: how many rows are in the spritesheet (4 if you are using templates from RPG Maker VX or newer);</li>
-                <li>cols: how many columns are in the spritesheet (3 if you are using templates from RPG Maker VX or newer);</li>
-                <li>width: total width of the template image;</li>
-                <li>height: total height of the template image;</li>
-                <li>paletteFile: name of the PNG file with the tones for each palette (do not include '.png' in the name). 
+                <li><b>rows:</b> how many rows are in the spritesheet (4 if you are using templates from RPG Maker VX or newer);</li>
+                <li><b>cols:</b> how many columns are in the spritesheet (3 if you are using templates from RPG Maker VX or newer);</li>
+                <li><b>width:</b> total width of the template image;</li>
+                <li><b>height:</b> total height of the template image;</li>
+                <li><b>paletteFile:</b> name of the PNG file with the tones for each palette (do not include '.png' in the name). 
                     The file is mandatory, but if you do not want to use the palette system, just put a single-pixel image there;</li>
-                <li>folders: list of categories for layers. For each folder we have the following attributes:
-                    <li>name: name of the folder. Only used to display;</li>
-                    <li>assets: list of PNG files in this folder (do not include '.png' in the name). 
+                <li><b>folders:</b> list of categories for layers. For each folder we have the following attributes:
+                    <ul>
+                    <li><b>name:</b> name of the folder. Only used to display;</li>
+                    <li><b>assets:</b> list of PNG files in this folder (do not include '.png' in the name). 
                         If it ends with '_back', then this assets has to layers, one for the front and one for the back. 
                         In this case, the back image must have the same name as the front image except for '_back' in the end 
-                        (ONLY include the name of the back image in the asset list in this case.)</li>
+                        (ONLY include the name of the back image in the asset list in this case).</li>
+                    </ul>
                 </li>
             </ul>
             Once it's done, click on the 'Import template' button and selected ALL files in the template folder, including .png and .json files. 
