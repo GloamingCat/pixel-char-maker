@@ -4,6 +4,13 @@ class LayerList {
         this.layers = [];
     }
 
+    setOnLoad(onload) {
+        for (let l in this.layers) {
+            this.layers[l].asset.onload = onload;
+        }
+        onload();
+    }
+
     addAssetLayers(asset, onchange) {
         const layer = this.createLayer(asset, false);
         layer.option.addEventListener('change', onchange);

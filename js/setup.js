@@ -34,6 +34,9 @@ class Setup {
             } else {
                 addLayer();
             }
+            layerList.setOnLoad(function() {
+                preview.redrawCanvas()
+            });
         }.bind(this);
         preview.setAnim(settings.interval, settings.animation);
     }
@@ -55,9 +58,6 @@ class Setup {
             let asset = this.addAsset(folder.assets[i], path, folderDiv);
             if (i == 0) {
                 if (folder.name == 'Body') {
-                    asset.onload = function() {
-                        preview.redrawCanvas()
-                    };
                     selectFolder(folderDiv);
                     selectAsset(folderDiv.firstElementChild);
                 }
