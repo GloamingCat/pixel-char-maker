@@ -73,6 +73,9 @@ class Preview {
     startAnim() {
         if (this.interval > 0) {
             this.timeoutId = setTimeout(this.redrawAnim.bind(this), this.interval / this.speedLevels[this.speed]);
+        } else {
+            anim.width = 0;
+            anim.height = 0;
         }
     }
 

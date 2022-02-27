@@ -25,7 +25,11 @@ class Setup {
         paletteImg.onload = function() {
             paletteSet.load(paletteImg);
             for (let f in settings.folders) {
-                this.addFolder(settings.folders[f], path);
+                let folderDiv = this.addFolder(settings.folders[f], path);
+                if (f == 0) {
+                    selectFolder(folderDiv);
+                    selectAsset(folderDiv.firstElementChild);
+                }
             }
             const cache = window.localStorage.getItem("pcm_layers");
             if (cache != null) {
@@ -57,10 +61,6 @@ class Setup {
         for (let i in folder.assets) {
             let asset = this.addAsset(folder.assets[i], path, folderDiv);
             if (i == 0) {
-                if (folder.name == 'Body') {
-                    selectFolder(folderDiv);
-                    selectAsset(folderDiv.firstElementChild);
-                }
                 folderButton.addEventListener('click', function(event) {
                     selectAsset(folderDiv.firstElementChild);
                 });

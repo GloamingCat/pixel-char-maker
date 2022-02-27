@@ -57,7 +57,7 @@
                     <select id="layerSelector" size="8" onchange="onLayerSelect(this.value)"></select>
                 </div>
                 <button onclick="exportLayers(event)" class="tooltip">
-                    Export layers
+                    Download layers
                     <h6 class="tooltiptext">Download a .json file with layers information.</h6>
                 </button>
                 <input id="importLayers" style="display:none" type="file" accept=".json, .png" multiple onchange="importLayers(event.target.files[0])">
@@ -194,12 +194,23 @@
             </div>
         </div>
 
-        <div>
-            <input id="templateButton" style="display:none" type="file" accept=".json, .png" multiple onchange="importTemplate(event)">
-            <button onclick="document.getElementById('templateButton').click()" class="tooltip">
-                Import template...
-                <h6 class="tooltiptext">Select files for template (must include a 'settings.json' file).</h6>
-            </button>
+        <div class="group">
+            Load template:
+            <div class="row">
+                <button onclick="new Setup().loadDefault('lth')" class="tooltip">
+                    Default/walking
+                    <h6 class="tooltiptext">Load project's default template for walking animation.</h6>
+                </button>
+                <button onclick="new Setup().loadDefault('lth_battle')" class="tooltip">
+                    Default/battle
+                    <h6 class="tooltiptext">Load project's default template for battle sprites.</h6>
+                </button>
+                <input id="templateButton" style="display:none" type="file" accept=".json, .png" multiple onchange="importTemplate(event)">
+                <button onclick="document.getElementById('templateButton').click()" class="tooltip">
+                    Import custom...
+                    <h6 class="tooltiptext">Select files for custom template (must include a 'settings.json' file).</h6>
+                </button>
+            </div>
         </div>
 
         <script src="js/colormap.js"></script>

@@ -1,0 +1,38 @@
+{
+    "rows": 8,
+    "cols": 4,
+    "width": 128,
+    "height": 256,
+    "paletteFile": "palettes",
+    "folders": [
+        {
+            "name": "Body",
+            "assets": [
+                "Body",
+                "Eyes1"
+            ]
+        },
+        {
+            "name": "Hair",
+            "assets": [
+                "Hair1",
+                "Hair2",
+                "Hair3"
+            ]
+        },
+        {
+            "name": "Clothes",
+            "assets": [
+                "Dress"
+            ]
+        },
+        {
+            "name": "Accessories",
+            "assets": [
+                "Hat_back"
+            ]
+        }
+    ],
+    "animation": [],
+    "interval": 0
+}
