@@ -40,7 +40,7 @@ function refreshColorSelector(asset) {
     let n = paletteSet.getDefaultPalettes(asset).length;
     for (let i = 0; i < n; i++) {
         let option = document.createElement('option');
-        option.innerHTML = 'Color ' + (i + 1);
+        option.innerHTML = 'Part ' + (i + 1);
         option.value = i;
         colorSelector.addEventListener('change', function(event) {
             selectedColor = event.target.value;
@@ -258,6 +258,13 @@ function exportLayers() {
     const downloader = document.createElement('a');
     downloader.href = URL.createObjectURL(file);
     downloader.download = 'pcm_layers';
+    downloader.click();
+}
+
+function exportSpritesheet() {
+    const downloader = document.createElement('a');
+    downloader.href = canvas.toDataURL();
+    downloader.download = 'pcm_spritesheet.png';
     downloader.click();
 }
 

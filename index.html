@@ -1,10 +1,11 @@
 <html>
     <head>
+        <link rel="icon" href="favicon.ico">
         <link rel="stylesheet" href="style.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=yes"/>
     </head>
     <body>
-
+        <title>Pixel Char Maker</title> 
         <h1>Pixel Char Maker</h1>
 
         <div class="group">
@@ -12,7 +13,7 @@
                 <div class="col" id="folderButtons">
                     Folders:
                 </div>
-                <div class="row-scroll" id="folderStack"></div>
+                <div class="row-scroll" id="folderStack" style="padding: 4px"></div>
             </div>
         </div>
 
@@ -20,7 +21,7 @@
             <div class="group"><div class="col">
                 Layers:<br>
                 <div class="row" id="layers">
-                    <div id="layerButtons">
+                    <div id="layerButtons" style="padding: 4px;">
                         <button onclick="addLayer()" class="tooltip">
                             <img src="img/add.png">
                             <h6 class="tooltiptext">Add layer with selected image.</h6>
@@ -56,22 +57,76 @@
                     </div>
                     <select id="layerSelector" size="8" onchange="onLayerSelect(this.value)"></select>
                 </div>
-                <button onclick="exportLayers(event)" class="tooltip">
+                <button onclick="exportLayers(event)" class="tooltip" style="padding: 4px; margin: 6px 4px 2px 4px;">
                     Download layers
                     <h6 class="tooltiptext">Download a .json file with layers information.</h6>
                 </button>
+                <button class="tooltip" onclick="exportSpritesheet()" style="padding: 4px; margin: 4px 4px 2px 4px;">
+                    Download PNG
+                    <h6 class="tooltiptext">Save the character spritesheet as a .PNG file.</h6>
+                </button>
                 <input id="importLayers" style="display:none" type="file" accept=".json, .png" multiple onchange="importLayers(event.target.files[0])">
-                <button onclick="document.getElementById('importLayers').click()" class="tooltip">
+                <button onclick="document.getElementById('importLayers').click()" class="tooltip" style="padding: 4px; margin: 4px;">
                     Import layers...
                     <h6 class="tooltiptext">Select a .json file with layers information.</h6>
                 </button>
             </div></div>
 
+            <div class="group" id="canvas">
+                Preview:<br>
+                <div class="row">
+                    <div class="tooltip"> 
+                        <canvas id="spritesheet" onclick="toggleCell(event)"></canvas>
+                        <h6 class="tooltiptext">Click on cell to hide/show it.</h6>
+                    </div>
+                    <canvas id="animation"></canvas>
+                </div><br>
+                <div class="row">
+                    <button class="tooltip" onclick="showAllCells()" style="padding: 4px; margin: 0px 2px 4px 4px">
+                        Show all
+                        <h6 class="tooltiptext">Show all cells of the selected layer.</h6>
+                    </button>
+                    <button class="tooltip" onclick="hideAllCells()" style="padding: 4px; margin: 0px 0px 4px 4px">
+                        Hide all
+                        <h6 class="tooltiptext">Hide all cells of the selected layer.</h6>
+                    </button>
+                </div>
+                <div class="row">
+                    <button class="tooltip" onclick="preview.refresh()" style="padding: 4px; margin: 0px 0px 4px 4px">
+                        Refresh
+                        <h6 class="tooltiptext">Redraw preview in case some image took too long to load.</h6>
+                    </button>
+                    <button class="tooltip" onclick="preview.decreaseSpeed()" style="padding: 4px 6px 4px 6px; margin: 0px 0px 4px 4px">
+                        &lt&lt
+                        <h6 class="tooltiptext">Decrease animation speed.</h6>
+                    </button>
+                    <button class="tooltip" onclick="preview.increaseSpeed()" style="padding: 4px 6px 4px 6px; margin: 0px 0px 4px 4px">
+                        &gt&gt
+                        <h6 class="tooltiptext">Increase animation speed.</h6>
+                    </button>
+                </div>
+            </div>
+
+            <script>
+                function showColors() {
+                    document.getElementById('colors').style.display = 'inline';
+                    document.getElementById('hideColors').style.display = 'inline';
+                    document.getElementById('showColors').style.display = 'none';
+                }
+                function hideColors() {
+                    document.getElementById('colors').style.display = 'none';
+                    document.getElementById('hideColors').style.display = 'none';
+                    document.getElementById('showColors').style.display = 'inline';
+                }
+            </script>
+
             <div class="group">
-                Colors:<br>
-                <div id="colors">
+                <button id="hideColors" onclick="hideColors()" style="display:none">&lt</button>
+                <button id="showColors" onclick="showColors()" style="display:none">&gt</button>
+                <label id="colors">Colors:<br>
+                <div>
                     <div class="tooltip">
-                        <select id="colorSelector"></select>
+                        <select id="colorSelector"style="padding: 4px 8px 4px 8px;"></select>
                         <h6 class="tooltiptext">Select colorable part.</h6>
                     </div>
                     <div class="tooltip">
@@ -86,127 +141,108 @@
                         </div>
                         <h6 class="tooltiptext">Multiply red, green and blue values for selected part.</h6>
                     </div>
-                </div>
+                </div></label>
             </div>
 
-            <div class="group"><div class="col">
-                <div>
-                    Offset:
-                    <button class="tooltip" onclick="resetField('offset')">
+            <script>
+                function showTransform() {
+                    document.getElementById('transform').style.display = 'inline';
+                    document.getElementById('hideTransform').style.display = 'inline';
+                    document.getElementById('showTransform').style.display = 'none';
+                }
+                function hideTransform() {
+                    document.getElementById('transform').style.display = 'none';
+                    document.getElementById('hideTransform').style.display = 'none';
+                    document.getElementById('showTransform').style.display = 'inline';
+                }
+            </script>
+
+            <div class="group">
+                <button id="hideTransform" onclick="hideTransform()" style="display:none">&lt</button>
+                <button id="showTransform" onclick="showTransform()" style="display:none">&gt</button>
+                <label id="transform">Offset:
+                <div class="col">
+                    <button class="tooltip" onclick="resetField('offset')" style="padding: 4px;">
                         Reset
                         <h6 class="tooltiptext">Move selected layer back to center.</h6>
                     </button>
-                    <div class="button-grid">
+                    <div class="button-grid" style="padding: 4px;">
                         <div class="grid-item"></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 0,-1)">
+                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 0,-1)" style="padding: 4px 6px 4px 6px;">
                             <img src="img/up.png">
                             <h6 class="tooltiptext">Move selected layer up.</h6>
                             </button></div>
                         <div class="grid-item"></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', -1,0)">
+                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', -1,0)" style="padding: 4px 6px 4px 6px;">
                             <img src="img/left.png">
                             <h6 class="tooltiptext">Move selected layer left.</h6>
                             </button></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 0,1)">
+                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 0,1)" style="padding: 4px 6px 4px 6px;">
                             <img src="img/down.png">
                             <h6 class="tooltiptext">Move selected layer down.</h6>
                             </button></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 1,0)">
+                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 1,0)" style="padding: 4px 6px 4px 6px;">
                             <img src="img/right.png">
                             <h6 class="tooltiptext">Move selected layer right.</h6>
                             </button></div>
                     </div>
-                </div>
+                
                 <br>
-                <button class="tooltip" onclick="flipCells()">
+                <button class="tooltip" onclick="flipCells()" style="padding: 4px; margin: 0px 4px 0px 4px">
                     Flip cells
                     <h6 class="tooltiptext">Flip horizontally each individual cell of the selected layer.</h6>
                 </button>
                 <br>
-                <div>
-                    Spacing:
-                    <button class="tooltip" onclick="resetField('space')">
-                        Reset
-                        <h6 class="tooltiptext">Reset horizontal and vertical spacing of selected layer.</h6>
+                
+                Spacing:
+                <button class="tooltip" onclick="resetField('space')" style="padding: 4px;">
+                    Reset
+                    <h6 class="tooltiptext">Reset horizontal and vertical spacing of selected layer.</h6>
+                </button>
+                <div class="button-grid" style="padding: 4px;">
+                    <div>H:</div>
+                    <button class="tooltip" onclick="increaseField('space', 1,0)" style="padding: 2px 0px 2px 0px;">
+                        <img src="img/add.png">
+                        <h6 class="tooltiptext">Increase horizontal spacing of selected layer.</h6>
                     </button>
-                    <div class="button-grid">
-                        <div>H:</div>
-                        <button class="tooltip" onclick="increaseField('space', 1,0)">
-                            <img src="img/add.png">
-                            <h6 class="tooltiptext">Increase horizontal spacing of selected layer.</h6>
-                        </button>
-                        <button class="tooltip" onclick="increaseField('space', -1,0)">
-                            <img src="img/delete.png">
-                            <h6 class="tooltiptext">Decrease horizontal spacing of selected layer.</h6>
-                        </button>
-                        <div>V:</div>
-                        <button class="tooltip" onclick="increaseField('space', 0,1)">
-                            <img src="img/add.png">
-                            <h6 class="tooltiptext">Increase vertical spacing of selected layer.</h6>
-                        </button>
-                        <button class="tooltip" onclick="increaseField('space', 0,-1)">
-                            <img src="img/delete.png">
-                            <h6 class="tooltiptext">Decrease vertical spacing of selected layer.</h6>
-                        </button>
-                    </div>
+                    <button class="tooltip" onclick="increaseField('space', -1,0)" style="padding: 2px 0px 2px 0px;">
+                        <img src="img/delete.png">
+                        <h6 class="tooltiptext">Decrease horizontal spacing of selected layer.</h6>
+                    </button>
+                    <div>V:</div>
+                    <button class="tooltip" onclick="increaseField('space', 0,1)" style="padding: 2px 0px 2px 0px;">
+                        <img src="img/add.png">
+                        <h6 class="tooltiptext">Increase vertical spacing of selected layer.</h6>
+                    </button>
+                    <button class="tooltip" onclick="increaseField('space', 0,-1)"style="padding: 2px 0px 2px 0px;">
+                        <img src="img/delete.png">
+                        <h6 class="tooltiptext">Decrease vertical spacing of selected layer.</h6>
+                    </button>
                 </div>
+                
                 <br>
                 <div class="tooltip">
                     <input type="checkbox" id="allLayers">
                     All layers
                     <h6 class="tooltiptext">Apply offset/flip/spacing modifications to all layers.</h6>
-                </div>
+                </div></label>
             </div></div>
 
-            <div class="group" id="canvas">
-                Preview:<br>
-                <div class="row">
-                    <div class="tooltip"> 
-                        <canvas id="spritesheet" onclick="toggleCell(event)"></canvas>
-                        <h6 class="tooltiptext">Click on cell to hide/show it.</h6>
-                    </div>
-                    <canvas id="animation"></canvas>
-                </div><br>
-                <div>
-                    <button class="tooltip" onclick="showAllCells()">
-                        Show all
-                        <h6 class="tooltiptext">Show all cells of the selected layer.</h6>
-                    </button>
-                    <button class="tooltip" onclick="hideAllCells()">
-                        Hide all
-                        <h6 class="tooltiptext">Hide all cells of the selected layer.</h6>
-                    </button>
-                </div>
-                <div>
-                    <button class="tooltip" onclick="preview.refresh()">
-                        Refresh
-                        <h6 class="tooltiptext">Redraw preview in case some image took too long to load.</h6>
-                    </button>
-                    <button class="tooltip" onclick="preview.decreaseSpeed()">
-                        &lt&lt
-                        <h6 class="tooltiptext">Decrease animation speed.</h6>
-                    </button>
-                    <button class="tooltip" onclick="preview.increaseSpeed()">
-                        &gt&gt
-                        <h6 class="tooltiptext">Increase animation speed.</h6>
-                    </button>
-                </div>
-            </div>
         </div>
 
         <div class="group">
             Load template:
             <div class="row">
-                <button onclick="new Setup().loadDefault('lth')" class="tooltip">
+                <button onclick="new Setup().loadDefault('lth')" class="tooltip" style="padding: 4px; margin: 4px;">
                     Default/walking
                     <h6 class="tooltiptext">Load project's default template for walking animation.</h6>
                 </button>
-                <button onclick="new Setup().loadDefault('lth_battle')" class="tooltip">
+                <button onclick="new Setup().loadDefault('lth_battle')" class="tooltip" style="padding: 4px; margin: 4px;">
                     Default/battle
                     <h6 class="tooltiptext">Load project's default template for battle sprites.</h6>
                 </button>
                 <input id="templateButton" style="display:none" type="file" accept=".json, .png" multiple onchange="importTemplate(event)">
-                <button onclick="document.getElementById('templateButton').click()" class="tooltip">
+                <button onclick="document.getElementById('templateButton').click()" class="tooltip" style="padding: 4px; margin: 4px;">
                     Import custom...
                     <h6 class="tooltiptext">Select files for custom template (must include a 'settings.json' file).</h6>
                 </button>
@@ -226,27 +262,29 @@
         <div>
             <h2>Instructions:</h2>
             <ol>
-                <li>If there are layers in the layer list but no image is showing in the preview, press the preview "Refresh" buttons.</li>
-                <li>Click on a folder button to see its assets.</li>
+                <li>If there are layers in the layer list but no image is showing in the preview, press the preview <b>Refresh</b> button.</li>
+                <li>Click on a folder button to show its <b>assets</b>.</li>
                 <li>Click on an asset image to select it (you will see a black border around the selected one).</li>
                 <li>Click on the <img src="img/add.png"> button next to the layer list. 
                     This will add a new layer at the top of the list with the selected asset 
-                    (sometimes it also adds a layer at the bottom, in case the assets has a "back" image).</li>
+                    (sometimes it also adds a layer at the bottom, in case the assets has a "back" image, and the name of this additional layer starts with 'b').</li>
                 <li>You can delete <img src="img/delete.png"> and reorder <img src="img/up.png"><img src="img/down.png"> layers freely, 
-                    and also duplicate <y src="img/duplicate.png"> layers with the button next to the layer list.</li>
+                    and also duplicate <img src="img/duplicate.png"> layers with the button next to the layer list.</li>
                 <li>You can also replace <img src="img/replace.png"> the asset of a layer 
                     (note: if a layer is a "back" type, it will always load the back image, you can't change this).</li>
-                <li>Choose the colorable part of the asset (the selector with Color 1, Color 2, etc). 
+                <li>Choose the <b>colorable part</b> of the asset (the selector with Part 1, Part 2, etc). 
                     Each part has an independent color. The number of parts depends on the selected layer.</li>
-                <li>Click on the color squares to select a palette. Each palette was a fixed number of tones, 
+                <li>Click on the color squares to select a <b>palette</b>. Each palette was a fixed number of tones, 
                     and the tones are swapped when you select a palette.</li>
-                <li>Use the RGB sliders to adjust the color of the selected part, if needed (you can use that to make it darker).</li>
-                <li>Move each layer around by changing the offset. Check the "All layers" box to affect all layers.</li>
-                <li>The "Flip cells" button flips horizontally each individual cell of the selected layer. Check the "All layers" box to flip all layers.</li>
-                <li>Increase the space between sprites by changing the horizontal and vertical spacing. Check the "All layers" box to affect all layers.</li>
-                <li>Click on a specific cell in the preview to hide/show it. It only affects the selected layer. The "Show all" and "Hide all" buttons are there as a shortcut for this.</li>
-                <li>Increase/decrease animation preview speed with the buttons next to the "Refresh" button.</li>
-                <li>When done, simply save the preview image. Press the "Refresh" button before that just to make sure.</li>
+                <li>Use the <b>RGB</b> sliders to adjust the color of the selected part, if needed (you can use that to make it darker).</li>
+                <li>Move each layer around by changing the offset. Check the <b>All layers</b> box to affect all layers.</li>
+                <li>The <b>Flip cells</b> button flips horizontally each individual cell of the selected layer. Check the <b>All layers</b> box to flip all layers.</li>
+                <li>Increase the space between sprites by changing the horizontal and vertical spacing. Check the <b>All layers</b> box to affect all layers.</li>
+                <li>Click on a specific cell in the preview to hide/show it. It only affects the selected layer. 
+                    The <b>Show all</b> and <b>Hide all</b> buttons are there as a shortcut for this.</li>
+                <li>Increase/decrease animation preview speed with the buttons next to the <b>Refresh</b> button.</li>
+                <li>When done, simply save the preview image or press the <b>Download PNG</b> button.
+                    Press the <b>Refresh</b> button before that just to make sure.</li>
             </ol>
 
             For IT people, see more at the <a href="https://github.com/GloamingCat/pixel-char-maker/">project's repository</a>.

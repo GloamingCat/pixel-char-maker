@@ -49,7 +49,7 @@ canvas {
 
 .button-grid {
     display: grid;
-    gap: 4px 4px;
+    gap: 2px 2px;
     grid-template-columns: auto auto auto;
 }
 
@@ -72,6 +72,8 @@ canvas {
     border-width: 2px;
     border-style: inset;
     border-color: lightgray;
+    padding: 4px;
+    margin: 2px;
 }
 
 .folder {
@@ -109,8 +111,3 @@ canvas {
     border-style: solid;
     border-color: black;
 }
-
-.mobile {
-    display: none;
-}
-

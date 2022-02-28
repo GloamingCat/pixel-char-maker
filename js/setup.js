@@ -22,6 +22,7 @@ class Setup {
         } else {
             paletteImg.src += path + settings.paletteFile + '.png';
         }
+        this.firstAsset = settings.folders[0].assets[0];
         paletteImg.onload = function() {
             paletteSet.load(paletteImg);
             for (let f in settings.folders) {
@@ -53,13 +54,15 @@ class Setup {
         folderStack.append(folderDiv);
         const folderButton = document.createElement('button');
         folderButton.innerHTML = folder.name;
+        folderButton.style.padding = "4px";
+        folderButton.style.margin = "2px";
         folderButton.addEventListener('click', function(event) {
             selectFolder(folderDiv);
         });
         folderButtons.append(folderButton);
         // Add asset buttons in the folder
         for (let i in folder.assets) {
-            let asset = this.addAsset(folder.assets[i], path, folderDiv);
+            this.addAsset(folder.assets[i], path, folderDiv);
             if (i == 0) {
                 folderButton.addEventListener('click', function(event) {
                     selectAsset(folderDiv.firstElementChild);
@@ -92,13 +95,17 @@ class Setup {
         folderDiv.append(asset);
         // Load all images
         asset.img = new Image();
-        asset.img.src = asset.src;
-        asset.img.onload = function() {
-            paletteSet.addDefaultPalettes(asset, asset.img);
-            if (name == 'Body') {
+        if (name == this.firstAsset) {
+            asset.img.onload = function() { 
+                paletteSet.addDefaultPalettes(asset, asset.img);
                 refreshColorSelector(asset);
             }
+        } else {
+            asset.img.onload = function() { 
+                paletteSet.addDefaultPalettes(asset, asset.img);
+            }
         }
+        asset.img.src = asset.src;
         if (back) {
             asset.back = new Image();
             asset.back.src = path.replace('.png', '_back.png');

@@ -29,7 +29,7 @@ class Layer {
     refreshOption() {
         this.option.value = this.id;
         if (this.back) {
-            this.option.innerHTML = this.asset.id + ' - back';
+            this.option.innerHTML = 'b' + this.asset.id;
         } else {
             this.option.innerHTML = this.asset.id;
         }
