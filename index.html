@@ -117,11 +117,11 @@
                         <h6 class="tooltiptext">Select colorable part.</h6>
                     </div>
                     <div class="tooltip">
-                        <div id="palettes" class="color-grid"></div>
+                        <div id="palettes" class="color-grid" style="margin-top: 4px; margin-bottom: 4px;"></div>
                         <h6 class="tooltiptext">Swap the palette for selected part.</h6>
                     </div>
                     RGBA:
-                    <button class="tooltip" onclick="setRGBA(100,100,100,100)" style="padding: 4px;">
+                    <button class="tooltip" onclick="changeRGBA(true, '100','100','100','100')" style="padding: 4px;">
                         Reset
                         <h6 class="tooltiptext">Reset RGBA multipliers.</h6>
                     </button>
@@ -129,34 +129,34 @@
                         <div class="rgb-sliders-grid">
                             <label class="grid-item" style="color: red;"> R:</label>
                             <label class="grid-item" style="margin: 8px 0px 8px 0px">
-                                <input type="range" value=100 id="red-slider" onchange="setRGBA(this.value)">
+                                <input type="range" value=100 id="red-slider" onchange="changeRGBA(true, this.value)">
                             </label>
                             <label class="grid-item" style="color: green;">G:</label>
                             <label class="grid-item" style="margin: 8px 0px 8px 0px">
-                                <input type="range" value=100 id="green-slider" onchange="setRGBA(null, this.value)">
+                                <input type="range" value=100 id="green-slider" onchange="changeRGBA(true, null, this.value)">
                             </label>
                             <label class="grid-item" style="color: blue;">B:</label>
                             <label class="grid-item" style="margin: 8px 0px 8px 0px">
-                                <input type="range" value=100 id="blue-slider" onchange="setRGBA(null, null, this.value)">
+                                <input type="range" value=100 id="blue-slider" onchange="changeRGBA(true, null, null, this.value)">
                             </label>
                             <label class="grid-item" style="color: black;">A:</label>
                             <label class="grid-item" style="margin: 8px 0px 8px 0px">
-                                <input type="range" value=100 id="alpha-slider" onchange="setRGBA(null, null, null, this.value)">
+                                <input type="range" value=100 id="alpha-slider" onchange="changeRGBA(true, null, null, null, this.value)">
                             </label>
                         </div>
                         <h6 class="tooltiptext">Multiply red, green, blue and alpha values for selected part.</h6>
                     </div>
-                    <div class="rgb-buttons-grid" id="color-buttons" style="display:none">
+                    <div class="rgb-buttons-grid" id="color-buttons" style="display:none; margin-top: 6px; margin-bottom: 4px;">
 
                         <label class="grid-item" style="color: red;">Red:</label>
                         <label class="grid-item">
-                            <button class="tooltip" onclick="increaseRGBA(-1,0,0,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                            <button class="tooltip" onclick="changeRGBA(false, -1, 0, 0, 0)" style="padding: 2px 6px 2px 6px; margin:2px">
                                 <img src="img/delete.png">
                                 <h6 class="tooltiptext">Decrease red value for selected part.</h6>
                             </button>
                         </label>
                         <label class="grid-item">
-                            <button class="tooltip" onclick="increaseRGBA(1,0,0,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                            <button class="tooltip" onclick="changeRGBA(false, 1, 0, 0, 0)" style="padding: 2px 6px 2px 6px; margin:2px">
                                 <img src="img/add.png">
                                 <h6 class="tooltiptext">Increase red value for selected part.</h6>
                             </button>
@@ -164,13 +164,13 @@
 
                         <label class="grid-item" style="color: green;">Green:</label>
                         <label class="grid-item">
-                            <button class="tooltip" onclick="increaseRGBA(0,-1,0,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                            <button class="tooltip" onclick="changeRGBA(false, 0, -1, 0, 0)" style="padding: 2px 6px 2px 6px; margin:2px">
                                 <img src="img/delete.png">
                                 <h6 class="tooltiptext">Decrease green value for selected part.</h6>
                             </button>
                         </label>
                         <label class="grid-item">
-                            <button class="tooltip" onclick="increaseRGBA(0,1,0,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                            <button class="tooltip" onclick="changeRGBA(false, 0, 1, 0, 0)" style="padding: 2px 6px 2px 6px; margin:2px">
                                 <img src="img/add.png">
                                 <h6 class="tooltiptext">Increase green value for selected part.</h6>
                             </button>
@@ -178,13 +178,13 @@
 
                         <label class="grid-item" style="color: blue;">Blue:</label>
                         <label class="grid-item">
-                            <button class="tooltip" onclick="increaseRGBA(0,0,-1,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                            <button class="tooltip" onclick="changeRGBA(false, 0, 0, -1, 0)" style="padding: 2px 6px 2px 6px; margin:2px">
                                 <img src="img/delete.png">
                                 <h6 class="tooltiptext">Decrease blue value for selected part.</h6>
                             </button>
                         </label>
                         <label class="grid-item">
-                            <button class="tooltip" onclick="increaseRGBA(0,0,1,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                            <button class="tooltip" onclick="changeRGBA(false, 0, 0, 1, 0)" style="padding: 2px 6px 2px 6px; margin:2px">
                                 <img src="img/add.png">
                                 <h6 class="tooltiptext">Increase blue value for selected part.</h6>
                             </button>
@@ -192,13 +192,13 @@
 
                         <label class="grid-item" style="color: black;">Alpha:</label>
                         <label class="grid-item">
-                            <button class="tooltip" onclick="increaseRGBA(0,0,0,-1)" style="padding: 2px 6px 2px 6px; margin:2px">
+                            <button class="tooltip" onclick="changeRGBA(false, 0, 0, 0, -1)" style="padding: 2px 6px 2px 6px; margin:2px">
                                 <img src="img/delete.png">
                                 <h6 class="tooltiptext">Decrease alpha value for selected part.</h6>
                             </button>
                         </label>
                         <label class="grid-item">
-                            <button class="tooltip" onclick="increaseRGBA(0,0,0,1)" style="padding: 2px 6px 2px 6px; margin:2px">
+                            <button class="tooltip" onclick="changeRGBA(false, 0, 0 ,0, 1)" style="padding: 2px 6px 2px 6px; margin:2px">
                                 <img src="img/add.png">
                                 <h6 class="tooltiptext">Increase alpha value for selected part.</h6>
                             </button>

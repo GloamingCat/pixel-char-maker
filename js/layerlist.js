@@ -95,31 +95,18 @@ class LayerList {
             this.layers[layerId][key] = !this.layers[layerId][key];
         }
     }
+
+    setLayerPalette(layerId, colorId, paletteId) {
+        this.layers[layerId].setPalette(colorId, paletteId);
+    }
+
+    setLayerRGBA(layerId, colorId, rgba, replace) {
+        this.layers[layerId].setRGBA(colorId, rgba, replace);
+    }
  
     draw(cols, rows, ctx) {
         for (let l in this.layers) {
             this.layers[l].draw(cols, rows, ctx);
-        }
-    }
-
-    setLayerPalette(layerId, colorId, paletteId, rgba) {
-        this.layers[layerId].setPalette(colorId, paletteId);
-        this.layers[layerId].setRGBA(colorId, paletteId, rgba);
-    }
-
-    setLayerRGBA(layerId, colorId, selectedPalette, rgba) {
-        if (selectedPalette == null) {
-            this.layers[layerId].setRGBA(colorId, -1, rgba);
-        } else {
-            this.layers[layerId].setRGBA(colorId, selectedPalette.paletteId, rgba);
-        }
-    }
-
-    increaseLayerRGBA(layerId, colorId, selectedPalette, rgba) {
-        if (selectedPalette == null) {
-            this.layers[layerId].increaseRGBA(colorId, -1, rgba);
-        } else {
-            this.layers[layerId].increaseRGBA(colorId, selectedPalette.paletteId, rgba);
         }
     }
 

@@ -26,8 +26,7 @@ function refreshColorSelector(asset) {
 // Palette.
 function selectPalette(event) {
     if (selectedLayer != -1 && selectedColor != -1) {
-        layerList.setLayerPalette(selectedLayer, selectedColor, event.target.paletteId,
-            [redSlider.value, greenSlider.value, blueSlider.value, alphaSlider.value]);
+        layerList.setLayerPalette(selectedLayer, selectedColor, event.target.paletteId);
         preview.redrawCanvas();
         deselectPalette();
         selectedPalette = event.target;
@@ -42,16 +41,9 @@ function deselectPalette() {
 }
 
 // RGB sliders.
-function setRGBA(r, g, b, a) {
+function changeRGBA(replace, r, g, b, a) {
     if (selectedLayer != -1) {
-        layerList.setLayerRGBA(selectedLayer, selectedColor, selectedPalette, [r, g, b, a]);
-        preview.redrawCanvas();
-    }
-}
-
-function increaseRGBA(r, g, b, a) {
-    if (selectedLayer != -1) {
-        layerList.setLayerRGBA(selectedLayer, selectedColor, selectedPalette, [r, g, b, a]);
+        layerList.setLayerRGBA(selectedLayer, selectedColor, [r, g, b, a], replace);
         preview.redrawCanvas();
     }
 }
@@ -68,13 +60,13 @@ function hideColors() {
     document.getElementById('show-colors').style.display = 'inline';
 }
 
+// Switch RGBA type.
 function switchToSliders() {
     document.getElementById('color-sliders').style.display = 'grid';
     document.getElementById('color-buttons').style.display = 'none';
     document.getElementById('switch-to-buttons').style.display = 'inline';
     document.getElementById('switch-to-sliders').style.display = 'none';
 }
-
 function switchToButtons() {
     document.getElementById('color-buttons').style.display = 'grid';
     document.getElementById('color-sliders').style.display = 'none';

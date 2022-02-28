@@ -3,6 +3,7 @@ class PaletteSet {
     constructor() {
         this.palettes = [];
         this.colorLists = new Map();
+        this.pixelMap = new Map();
     }
 
     load(img) {
@@ -30,12 +31,17 @@ class PaletteSet {
         }
     }
 
-    findPalette(pixel) {
+    // Auxiliary
+    pixelToKey(data, i) {
+        return (1 << 24) + (data[i] << 16) + (data[i + 1] << 8) + data[i + 2];
+    }
+
+    findTone(pixel) {
         for (let p in this.palettes) {
             for (let t in this.palettes[p]) {
                 let tone = this.palettes[p][t]
                 if (tone[0] == pixel[0] && tone[1] == pixel[1] && tone[2] == pixel[2]) {
-                    return p;
+                    return [p, t];
                 }
             }
         }
@@ -53,9 +59,10 @@ class PaletteSet {
         let data = imgData.data;
         for (var i = 0; i < data.length; i += 4) {
             let pixel = [data[i], data[i + 1], data[i + 2]];
-            let palette = this.findPalette(pixel);
-            if (palette != null) {
-                colorSet.add(palette);
+            let tone = this.findTone(pixel);
+            if (tone != null) {
+                this.pixelMap.set(this.pixelToKey(data, i), tone);
+                colorSet.add(tone[0]);
             }
         }
         return [...colorSet];
@@ -66,6 +73,10 @@ class PaletteSet {
             return this.palettes[id];
         else
             return this.palettes[this.getDefaultPalettes(asset)[id]];
+    }
+
+    getTone(key) {
+        return this.pixelMap.get(key);
     }
 
     getDefaultPalettes(asset) {

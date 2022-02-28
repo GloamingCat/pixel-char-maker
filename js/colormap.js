@@ -1,64 +1,70 @@
 class ColorMap {
 
-    constructor(copy) {
-        this.map = new Map(copy);
+    constructor(paletteMap, rgbaMap) {
+        // Maps paletteIds (int) to paletteIds (int)
+        this.paletteMap = new Map(paletteMap);
+        // Maps paletteIds (int) to rgba (int, int, int, int)
+        this.rgbaMap = new Map(rgbaMap)
     }
 
     clone() {
-        return new ColorMap(this.map);
+        return new ColorMap(this.paletteMap, this.rgbaMap);
     }
 
-    pixelToKey(data, i) {
-        return (1 << 24) + (data[i] << 16) + (data[i+1] << 8) + data[i+2];
-    }
-    
     convertPixels(data, layerRgba) {
-        for (var i = 0; i < data.length; i += 4) {
-            let key = this.pixelToKey(data, i);
-            if (this.map.has(key)) {
-                let rgba = this.map.get(key);
-                data[i] = rgba[0];
-                data[i + 1] = rgba[1];
-                data[i + 2] = rgba[2];
-                data[i + 3] *= rgba[3] / 255;
+        for (var p = 0; p < data.length; p += 4) {
+            let key = paletteSet.pixelToKey(data, p);
+            let tone = paletteSet.getTone(key);
+            if (tone != null) {
+                if (this.paletteMap.has(tone[0])) {
+                    let newPalette = paletteSet.get(this.paletteMap.get(tone[0]));
+                    for (let i = 0; i < 3; i++)
+                        data[p + i] = newPalette[tone[1]][i];
+                }
+                if (this.rgbaMap.has(tone[0])) {
+                    let rgba = this.rgbaMap.get(tone[0]);
+                    for (let i = 0; i < 4; i++)
+                        data[p + i] *= rgba[i];
+                }
             }
-            data[i] *= layerRgba[0];
-            data[i + 1] *= layerRgba[1];
-            data[i + 2] *= layerRgba[2];
-            data[i + 3] *= layerRgba[3];
+            data[p] *= layerRgba[0];
+            data[p + 1] *= layerRgba[1];
+            data[p + 2] *= layerRgba[2];
+            data[p + 3] *= layerRgba[3];
         }
     }
 
-    mapTones(oldPalette, newPalette) {
-        for (let t in oldPalette) {
-            let key = this.pixelToKey(oldPalette[t], 0);
-            this.map.set(key, newPalette[t]);
-        }
+    mapPalette(oldPaletteId, newPaletteId) {
+        this.paletteMap.set(oldPaletteId, newPaletteId);
     }
 
-    mapRGBA(oldPalette, newPalette, newrgba) {
-        for (let t in oldPalette) {
-            var key = this.pixelToKey(oldPalette[t], 0);
-            var currentColor = this.map.get(key);
-            if (currentColor == null) currentColor = oldPalette[t];
-            let rgba = [0, 0, 0];
-            for (let i in rgba) {
-                rgba[i] = newrgba[i] == null ? currentColor[i] : newPalette[t][i] * newrgba[i] / 100.0;
+    mapRGBA(oldPaletteId, rgba, replace) {
+        let currentRgba = this.rgbaMap.get(oldPaletteId);
+        if (currentRgba == null) {
+            currentRgba = [1, 1, 1, 1];
+            this.rgbaMap.set(oldPaletteId, currentRgba);
+        }
+        if (replace) {
+            for (let i = 0; i < 4; i++) {
+                if (rgba[i] != null) currentRgba[i] = parseInt(rgba[i]) / 100;
             }
-            let a = currentColor.length == 3 ? 255 : currentColor[3];
-            let newa = newPalette[t].length == 3 ? 255 : newPalette[t][3];
-            rgba.push(newrgba[3] == null ? a : newrgba[3] * newa / 100.0);
-            console.log(rgba);
-            this.map.set(key, rgba);
+        } else {
+            for (let i = 0; i < 4; i++) {
+                currentRgba[i] = Math.max(0, Math.min(currentRgba[i] + rgba[i] * 0.2, 1));
+            }
         }
     }
 
     encode() {
-        return [...this.map];
+        return {
+            "palette": [...this.paletteMap],
+            "rgba": [...this.rgbaMap]
+        };
     }
     
     decode(json) {
-        this.map = new Map(json);
+        this.paletteMap = new Map(json.palette);
+        this.rgbaMap = new Map(json.rgba);
     }
 
 }

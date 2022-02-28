@@ -58,23 +58,25 @@ class Layer {
     }
 
     setPalette(colorId, paletteId) {
-        let oldPalette = paletteSet.get(colorId, this.asset)
-        let newPalette = paletteSet.get(paletteId);
-        this.colorMap.mapTones(oldPalette, newPalette);
+        var oldPaletteId = paletteSet.getDefaultPalettes(this.asset)[colorId];
+        this.colorMap.mapPalette(oldPaletteId, paletteId);
     }
 
-    setRGBA(colorId, paletteId, rgba) {
+    setRGBA(colorId, rgba, replace) {
         if (colorId == -1) {
-            for (i in this.rgba) {
-                if (rgba[i] != null)
-                    this.rgba[i] = rgba[i] / 100.0;
+            if (replace) {
+                for (i in this.rgba) {
+                    if (rgba[i] != null) this.rgba[i] = parseInt(rgba[i]) / 100.0;
+                }
+            } else {
+                for (i in this.rgba) {
+                    this.rgba[i] = Math.max(0, Math.min(this.rgba[i] + rgba[i] * 0.2, 1));
+                }
             }
             return;
         }
-        let oldPalette = paletteSet.get(colorId, this.asset);
-        let newPalette = paletteId == -1 ? oldPalette : paletteSet.get(paletteId);
-        console.log(rgba);
-        this.colorMap.mapRGBA(oldPalette, newPalette, rgba)
+        let oldPaletteId = paletteSet.getDefaultPalettes(this.asset)[colorId];
+        this.colorMap.mapRGBA(oldPaletteId, rgba, replace)
     }
 
     swap(other) {
