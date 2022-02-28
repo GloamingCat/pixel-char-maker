@@ -6,7 +6,8 @@ class LayerList {
 
     setOnLoad(onload) {
         for (let l in this.layers) {
-            this.layers[l].asset.onload = onload;
+            if (this.layers[l].asset != null)
+                this.layers[l].asset.onload = onload;
         }
         onload();
     }
@@ -106,7 +107,8 @@ class LayerList {
  
     draw(cols, rows, ctx) {
         for (let l in this.layers) {
-            this.layers[l].draw(cols, rows, ctx);
+            if (this.layers[l].asset != null)
+                this.layers[l].draw(cols, rows, ctx);
         }
     }
 
@@ -140,7 +142,8 @@ class LayerList {
     save() {
         let jsonLayers = [];
         for (let l in this.layers) {
-            jsonLayers.push(this.layers[l].encode());
+            if (this.layers[l].asset != null)
+                jsonLayers.push(this.layers[l].encode());
         }
         return JSON.stringify(jsonLayers);
     }
@@ -180,7 +183,8 @@ class LayerList {
     getMaxWidth(cols) {
         var maxW = 0;
         for (let l in this.layers) {
-            maxW = Math.max(maxW, this.layers[l].asset.img.width + this.layers[l].spaceX * 2 * cols);
+            if (this.layers[l].asset != null)
+                maxW = Math.max(maxW, this.layers[l].asset.img.width + this.layers[l].spaceX * 2 * cols);
         }
         return maxW;
     }
@@ -188,7 +192,8 @@ class LayerList {
     getMaxHeight(rows) {
         var maxH = 0;
         for (let l in this.layers) {
-            maxH = Math.max(maxH, this.layers[l].asset.img.height + this.layers[l].spaceY * 2 * rows);
+            if (this.layers[l].asset != null)
+                maxH = Math.max(maxH, this.layers[l].asset.img.height + this.layers[l].spaceY * 2 * rows);
         }
         return maxH;
     }

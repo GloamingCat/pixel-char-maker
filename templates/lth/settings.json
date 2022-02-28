@@ -8,33 +8,41 @@
         {
             "name": "Body",
             "assets": [
-                "Body",
+                "Body1",
                 "Body2",
                 "Eyes1",
-                "PointyEars"
+                "Ears1",
+                "Body3",
+                "Head"
             ]
         },
         {
             "name": "Hair",
             "assets": [
-                "Hair1",
-                "Hair2",
-                "Hair3",
-                "Hair4_back"
+                "Hair0",
+                "Hair1a",
+                "Hair2a",
+                "Hair3a",
+                "Hair4a",
+                "Hair4b",
+                "Hair3b",
+                "Hair3c"
             ]
         },
         {
             "name": "Clothes",
             "assets": [
                 "Dress",
-                "Outfit",
+                "Outfit1",
+                "Outfit2",
                 "Robe"
             ]
         },
         {
             "name": "Accessories",
             "assets": [
-                "Hat_back",
+                "Hat1a",
+                "Bow",
                 "Glasses"
             ]
         }

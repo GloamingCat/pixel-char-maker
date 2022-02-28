@@ -17,7 +17,7 @@ class Layer {
 
     createOption() {        
         this.option = document.createElement('option');
-        this.option.innerHTML = this.asset.id;
+        this.option.innerHTML = this.asset == null ? "<null>" : this.asset.id;
         this.option.value = this.id;
         const self = this;
         this.option.addEventListener('click', function() {
@@ -28,7 +28,9 @@ class Layer {
 
     refreshOption() {
         this.option.value = this.id;
-        if (this.back) {
+        if (this.asset == null) {
+            this.option.innerHTML = "<null>";
+        } else if (this.back) {
             this.option.innerHTML = 'b' + this.asset.id;
         } else {
             this.option.innerHTML = this.asset.id;

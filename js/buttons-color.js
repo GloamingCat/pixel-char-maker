@@ -3,7 +3,7 @@ function refreshColorSelector(asset) {
     colorSelector.innerHTML = '';
     colorSelector.value = '0';
     selectedColor = -1;
-    if (asset.img == null || !paletteSet.getDefaultPalettes(asset)) {
+    if (asset == null || asset.img == null || !paletteSet.getDefaultPalettes(asset)) {
         return;
     }
     let n = paletteSet.getDefaultPalettes(asset).length;
