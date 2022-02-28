@@ -59,9 +59,14 @@ canvas {
     grid-template-columns: auto auto auto auto;
 }
 
-.rgb-grid {
+.rgb-sliders-grid {
     display: grid;
     grid-template-columns: auto auto;
+}
+
+.rgb-buttons-grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
 }
 
 #folderStack {

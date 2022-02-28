@@ -102,16 +102,24 @@ class LayerList {
         }
     }
 
-    setLayerPalette(layerId, colorId, paletteId, r, g, b) {
+    setLayerPalette(layerId, colorId, paletteId, rgba) {
         this.layers[layerId].setPalette(colorId, paletteId);
-        this.layers[layerId].setRGB(colorId, paletteId, r, g, b);
+        this.layers[layerId].setRGBA(colorId, paletteId, rgba);
     }
 
-    setLayerRGB(layerId, colorId, selectedPalette, r, g, b) {
+    setLayerRGBA(layerId, colorId, selectedPalette, rgba) {
         if (selectedPalette == null) {
-            this.layers[layerId].setRGB(colorId, -1, r, g, b);
+            this.layers[layerId].setRGBA(colorId, -1, rgba);
         } else {
-            this.layers[layerId].setRGB(colorId, selectedPalette.paletteId, r, g, b);
+            this.layers[layerId].setRGBA(colorId, selectedPalette.paletteId, rgba);
+        }
+    }
+
+    increaseLayerRGBA(layerId, colorId, selectedPalette, rgba) {
+        if (selectedPalette == null) {
+            this.layers[layerId].increaseRGBA(colorId, -1, rgba);
+        } else {
+            this.layers[layerId].increaseRGBA(colorId, selectedPalette.paletteId, rgba);
         }
     }
 

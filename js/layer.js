@@ -11,7 +11,7 @@ class Layer {
         this.flip = false;
         this.hidden = new Set();
         this.colorMap = new ColorMap();
-        this.rgb = [1.0, 1.0, 1.0];
+        this.rgba = [1.0, 1.0, 1.0, 1.0];
         this.createOption();
     }
 
@@ -43,7 +43,7 @@ class Layer {
         copy.spaceY = this.spaceY;
         copy.hidden = new Set(this.hidden);
         copy.colorMap = this.colorMap.clone();
-        copy.rgb = [this.rgb[0], this.rgb[1], this.rgb[2]];
+        copy.rgba = [this.rgba[0], this.rgba[1], this.rgba[2], this.rgba[3]];
         copy.refreshOption();
         return copy;
     }
@@ -63,16 +63,18 @@ class Layer {
         this.colorMap.mapTones(oldPalette, newPalette);
     }
 
-    setRGB(colorId, paletteId, r, g, b) {
+    setRGBA(colorId, paletteId, rgba) {
         if (colorId == -1) {
-            if (r != null) this.rgb[0] = r / 100.0;
-            if (g != null) this.rgb[1] = g / 100.0;
-            if (b != null) this.rgb[2] = b / 100.0;
+            for (i in this.rgba) {
+                if (rgba[i] != null)
+                    this.rgba[i] = rgba[i] / 100.0;
+            }
             return;
         }
         let oldPalette = paletteSet.get(colorId, this.asset);
         let newPalette = paletteId == -1 ? oldPalette : paletteSet.get(paletteId);
-        this.colorMap.changeRGB(oldPalette, newPalette, r, g, b)
+        console.log(rgba);
+        this.colorMap.mapRGBA(oldPalette, newPalette, rgba)
     }
 
     swap(other) {
@@ -85,7 +87,7 @@ class Layer {
         let flip = other.flip;
         let hidden = other.hidden;
         let colorMap = other.colorMap;
-        let rgb = other.rgb;
+        let rgba = other.rgba;
         other.asset = this.asset;
         other.back = this.back;
         other.offsetX = this.offsetX;
@@ -95,7 +97,7 @@ class Layer {
         other.flip = this.flip;
         other.hidden = this.hidden;
         other.colorMap = this.colorMap;
-        other.rgb = this.rgb;
+        other.rgba = this.rgba;
         this.asset = asset;
         this.back = back;
         this.offsetX = offsetX;
@@ -105,7 +107,7 @@ class Layer {
         this.flip = flip;
         this.hidden = hidden;
         this.colorMap = colorMap;
-        this.rgb = rgb;
+        this.rgba = rgba;
         // Refresh name
         other.refreshOption();
         this.refreshOption();
@@ -121,7 +123,7 @@ class Layer {
         let assetCtx = assetCanvas.getContext('2d');
         assetCtx.drawImage(img, 0, 0);
         let imgData = assetCtx.getImageData(0, 0, assetCanvas.width, assetCanvas.height);
-        this.colorMap.convertPixels(imgData.data, this.rgb);
+        this.colorMap.convertPixels(imgData.data, this.rgba);
         assetCtx.putImageData(imgData, 0, 0);
         var sw = img.width / cols;
         var sh = img.height / rows;
@@ -159,7 +161,7 @@ class Layer {
             "spaceX": this.spaceX,
             "spaceY": this.spaceY,
             "flip": this.flip,
-            "rgb": this.rgb,
+            "rgba": this.rgba,
             "hidden": [...this.hidden],
             "colorMap": this.colorMap.encode()
         };
@@ -171,9 +173,14 @@ class Layer {
         this.spaceX = json.spaceX;
         this.spaceY = json.spaceY;
         this.flip = json.flip;
-        this.rgb = json.rgb;
+        if (json.rgb != null) {
+            this.rgba = json.rgb;
+            this.rgba.push(1);
+        } else {
+            this.rgba = json.rgba == null ? [1, 1, 1, 1] : json.rgba;
+            this.colorMap.decode(json.colorMap);
+        }
         this.hidden = new Set(json.hidden);
-        this.colorMap.decode(json.colorMap);
     }
 
 }

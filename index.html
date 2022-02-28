@@ -1,11 +1,11 @@
 <html>
     <head>
+        <title>Pixel Char Maker</title> 
         <link rel="icon" href="favicon.ico">
         <link rel="stylesheet" href="style.css">
         <meta name="viewport" content="initial-scale=1.0, user-scalable=yes"/>
     </head>
     <body>
-        <title>Pixel Char Maker</title> 
         <h1>Pixel Char Maker</h1>
 
         <div class="group">
@@ -107,23 +107,10 @@
                 </div>
             </div>
 
-            <script>
-                function showColors() {
-                    document.getElementById('colors').style.display = 'inline';
-                    document.getElementById('hideColors').style.display = 'inline';
-                    document.getElementById('showColors').style.display = 'none';
-                }
-                function hideColors() {
-                    document.getElementById('colors').style.display = 'none';
-                    document.getElementById('hideColors').style.display = 'none';
-                    document.getElementById('showColors').style.display = 'inline';
-                }
-            </script>
-
             <div class="group">
-                <button id="hideColors" onclick="hideColors()" style="display:none">&lt</button>
-                <button id="showColors" onclick="showColors()" style="display:none">&gt</button>
-                <label id="colors">Colors:<br>
+                <button id="hide-colors" onclick="hideColors()" style="display:none">&lt</button>
+                <button id="show-colors" onclick="showColors()" style="display:none">&gt</button>
+                <label id="colors">Palette:<br>
                 <div>
                     <div class="tooltip">
                         <select id="colorSelector"style="padding: 4px 8px 4px 8px;"></select>
@@ -133,33 +120,98 @@
                         <div id="palettes" class="color-grid"></div>
                         <h6 class="tooltiptext">Swap the palette for selected part.</h6>
                     </div>
-                    <div class="tooltip">
-                        <div id="rgb" class="rgb-grid">
-                            R:<input type="range" value=100 id="redSlider" onchange="setRGB(this.value, null, null)">
-                            G:<input type="range" value=100 id="greenSlider" onchange="setRGB(null, this.value, null)">
-                            B:<input type="range" value=100 id="blueSlider" onchange="setRGB(null, null, this.value)">
+                    RGBA:
+                    <button class="tooltip" onclick="setRGBA(100,100,100,100)" style="padding: 4px;">
+                        Reset
+                        <h6 class="tooltiptext">Reset RGBA multipliers.</h6>
+                    </button>
+                    <div class="tooltip" id="color-sliders">
+                        <div class="rgb-sliders-grid">
+                            <label class="grid-item" style="color: red;"> R:</label>
+                            <label class="grid-item" style="margin: 8px 0px 8px 0px">
+                                <input type="range" value=100 id="red-slider" onchange="setRGBA(this.value)">
+                            </label>
+                            <label class="grid-item" style="color: green;">G:</label>
+                            <label class="grid-item" style="margin: 8px 0px 8px 0px">
+                                <input type="range" value=100 id="green-slider" onchange="setRGBA(null, this.value)">
+                            </label>
+                            <label class="grid-item" style="color: blue;">B:</label>
+                            <label class="grid-item" style="margin: 8px 0px 8px 0px">
+                                <input type="range" value=100 id="blue-slider" onchange="setRGBA(null, null, this.value)">
+                            </label>
+                            <label class="grid-item" style="color: black;">A:</label>
+                            <label class="grid-item" style="margin: 8px 0px 8px 0px">
+                                <input type="range" value=100 id="alpha-slider" onchange="setRGBA(null, null, null, this.value)">
+                            </label>
                         </div>
-                        <h6 class="tooltiptext">Multiply red, green and blue values for selected part.</h6>
+                        <h6 class="tooltiptext">Multiply red, green, blue and alpha values for selected part.</h6>
                     </div>
+                    <div class="rgb-buttons-grid" id="color-buttons" style="display:none">
+
+                        <label class="grid-item" style="color: red;">Red:</label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseRGBA(-1,0,0,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                                <img src="img/delete.png">
+                                <h6 class="tooltiptext">Decrease red value for selected part.</h6>
+                            </button>
+                        </label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseRGBA(1,0,0,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                                <img src="img/add.png">
+                                <h6 class="tooltiptext">Increase red value for selected part.</h6>
+                            </button>
+                        </label>
+
+                        <label class="grid-item" style="color: green;">Green:</label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseRGBA(0,-1,0,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                                <img src="img/delete.png">
+                                <h6 class="tooltiptext">Decrease green value for selected part.</h6>
+                            </button>
+                        </label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseRGBA(0,1,0,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                                <img src="img/add.png">
+                                <h6 class="tooltiptext">Increase green value for selected part.</h6>
+                            </button>
+                        </label>
+
+                        <label class="grid-item" style="color: blue;">Blue:</label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseRGBA(0,0,-1,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                                <img src="img/delete.png">
+                                <h6 class="tooltiptext">Decrease blue value for selected part.</h6>
+                            </button>
+                        </label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseRGBA(0,0,1,0)" style="padding: 2px 6px 2px 6px; margin:2px">
+                                <img src="img/add.png">
+                                <h6 class="tooltiptext">Increase blue value for selected part.</h6>
+                            </button>
+                        </label>
+
+                        <label class="grid-item" style="color: black;">Alpha:</label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseRGBA(0,0,0,-1)" style="padding: 2px 6px 2px 6px; margin:2px">
+                                <img src="img/delete.png">
+                                <h6 class="tooltiptext">Decrease alpha value for selected part.</h6>
+                            </button>
+                        </label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseRGBA(0,0,0,1)" style="padding: 2px 6px 2px 6px; margin:2px">
+                                <img src="img/add.png">
+                                <h6 class="tooltiptext">Increase alpha value for selected part.</h6>
+                            </button>
+                        </label>
+                    </div>
+                    <button id="switch-to-buttons" style="margin: 4px;" onclick="switchToButtons()">Switch to buttons</button>
+                    <button id="switch-to-sliders" style="margin: 4px; display:none" onclick="switchToSliders()">Switch to sliders</button>
                 </div></label>
             </div>
 
-            <script>
-                function showTransform() {
-                    document.getElementById('transform').style.display = 'inline';
-                    document.getElementById('hideTransform').style.display = 'inline';
-                    document.getElementById('showTransform').style.display = 'none';
-                }
-                function hideTransform() {
-                    document.getElementById('transform').style.display = 'none';
-                    document.getElementById('hideTransform').style.display = 'none';
-                    document.getElementById('showTransform').style.display = 'inline';
-                }
-            </script>
-
             <div class="group">
-                <button id="hideTransform" onclick="hideTransform()" style="display:none">&lt</button>
-                <button id="showTransform" onclick="showTransform()" style="display:none">&gt</button>
+                <button id="hide-transform" onclick="hideTransform()" style="display:none">&lt</button>
+                <button id="show-transform" onclick="showTransform()" style="display:none">&gt</button>
                 <label id="transform">Offset:
                 <div class="col">
                     <button class="tooltip" onclick="resetField('offset')" style="padding: 4px;">
@@ -167,24 +219,32 @@
                         <h6 class="tooltiptext">Move selected layer back to center.</h6>
                     </button>
                     <div class="button-grid" style="padding: 4px;">
-                        <div class="grid-item"></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 0,-1)" style="padding: 4px 6px 4px 6px;">
-                            <img src="img/up.png">
-                            <h6 class="tooltiptext">Move selected layer up.</h6>
-                            </button></div>
-                        <div class="grid-item"></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', -1,0)" style="padding: 4px 6px 4px 6px;">
-                            <img src="img/left.png">
-                            <h6 class="tooltiptext">Move selected layer left.</h6>
-                            </button></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 0,1)" style="padding: 4px 6px 4px 6px;">
-                            <img src="img/down.png">
-                            <h6 class="tooltiptext">Move selected layer down.</h6>
-                            </button></div>
-                        <div class="grid-item"><button class="tooltip" onclick="increaseField('offset', 1,0)" style="padding: 4px 6px 4px 6px;">
-                            <img src="img/right.png">
-                            <h6 class="tooltiptext">Move selected layer right.</h6>
-                            </button></div>
+                        <label class="grid-item"></label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseField('offset', 0,-1)" style="padding: 4px 6px 4px 6px;">
+                                <img src="img/up.png">
+                                <h6 class="tooltiptext">Move selected layer up.</h6>
+                            </button>
+                        </label>
+                        <label class="grid-item"></label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseField('offset', -1,0)" style="padding: 4px 6px 4px 6px;">
+                                <img src="img/left.png">
+                                <h6 class="tooltiptext">Move selected layer left.</h6>
+                            </button>
+                        </label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseField('offset', 0,1)" style="padding: 4px 6px 4px 6px;">
+                                <img src="img/down.png">
+                                <h6 class="tooltiptext">Move selected layer down.</h6>
+                            </button>
+                        </label>
+                        <label class="grid-item">
+                            <button class="tooltip" onclick="increaseField('offset', 1,0)" style="padding: 4px 6px 4px 6px;">
+                                <img src="img/right.png">
+                                <h6 class="tooltiptext">Move selected layer right.</h6>
+                            </button>
+                        </label>
                     </div>
                 
                 <br>
@@ -200,23 +260,23 @@
                     <h6 class="tooltiptext">Reset horizontal and vertical spacing of selected layer.</h6>
                 </button>
                 <div class="button-grid" style="padding: 4px;">
-                    <div>H:</div>
-                    <button class="tooltip" onclick="increaseField('space', 1,0)" style="padding: 2px 0px 2px 0px;">
-                        <img src="img/add.png">
-                        <h6 class="tooltiptext">Increase horizontal spacing of selected layer.</h6>
-                    </button>
+                    <label>H:</label>
                     <button class="tooltip" onclick="increaseField('space', -1,0)" style="padding: 2px 0px 2px 0px;">
                         <img src="img/delete.png">
                         <h6 class="tooltiptext">Decrease horizontal spacing of selected layer.</h6>
                     </button>
-                    <div>V:</div>
+                    <button class="tooltip" onclick="increaseField('space', 1,0)" style="padding: 2px 0px 2px 0px;">
+                        <img src="img/add.png">
+                        <h6 class="tooltiptext">Increase horizontal spacing of selected layer.</h6>
+                    </button>
+                    <label>V:</label>
+                    <button class="tooltip" onclick="increaseField('space', 0,-1)" style="padding: 2px 0px 2px 0px;">
+                        <img src="img/delete.png">
+                        <h6 class="tooltiptext">Decrease vertical spacing of selected layer.</h6>
+                    </button>
                     <button class="tooltip" onclick="increaseField('space', 0,1)" style="padding: 2px 0px 2px 0px;">
                         <img src="img/add.png">
                         <h6 class="tooltiptext">Increase vertical spacing of selected layer.</h6>
-                    </button>
-                    <button class="tooltip" onclick="increaseField('space', 0,-1)"style="padding: 2px 0px 2px 0px;">
-                        <img src="img/delete.png">
-                        <h6 class="tooltiptext">Decrease vertical spacing of selected layer.</h6>
                     </button>
                 </div>
                 
@@ -255,6 +315,10 @@
         <script src="js/layer.js"></script>
         <script src="js/layerlist.js"></script>
         <script src="js/buttons.js"></script>
+        <script src="js/buttons-color.js"></script>
+        <script src="js/buttons-layers.js"></script>
+        <script src="js/buttons-preview.js"></script>
+        <script src="js/buttons-transform.js"></script>
         <script src="js/globals.js"></script>
         <script src="js/setup.js"></script>
         <script>new Setup().loadDefault('lth')</script>
