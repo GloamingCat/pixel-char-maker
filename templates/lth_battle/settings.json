@@ -9,7 +9,8 @@
             "name": "Body",
             "assets": [
                 "Body1",
-                "Eyes1"
+                "Eyes1",
+                "Ears1"
             ]
         },
         {
@@ -17,20 +18,27 @@
             "assets": [
                 "Hair1a",
                 "Hair2a",
-                "Hair3a"
+                "Hair3a",
+                "Hair4a",
+                "Hair4b",
+                "Hair3b",
+                "Hair3c"
             ]
         },
         {
             "name": "Clothes",
             "assets": [
-                "Dress"
+                "Dress",
+                "Outfit1",
+                "Outfit2"
             ]
         },
         {
             "name": "Accessories",
             "assets": [
                 "Hat1a",
-                "Hat1b"
+				"Hat1b",
+                "Glasses"
             ]
         }
     ],
