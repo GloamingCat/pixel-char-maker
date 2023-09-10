@@ -8,21 +8,19 @@
     <body>
         <h1>Pixel Char Maker</h1>
 
-		<button onclick="toggleTooltips(this)">Tooltips ON</button>
-		<script>
-			var tooltips = document.getElementsByClassName('tooltiptext');
-			var tooltipsEnabled = true;
-			function toggleTooltips(btn) {
-				tooltipsEnabled = !tooltipsEnabled;
-				if (tooltipsEnabled)
-					btn.innerHTML = "Tooltips ON";
-				else
-					btn.innerHTML = "Tooltips OFF";
-				for (let i = 0; i < tooltips.length; i++) {
-					tooltips[i].visibility = tooltipsEnabled;
-				}
-			}
-		</script>
+        <button onclick="toggleTooltips(this)" style="padding: 4px; margin: 0px 0px 4px 4px">Tooltips ON</button>
+        <script>
+            var tooltips = document.getElementsByClassName("tooltiptext");
+            var tooltipsEnabled = true;
+            function toggleTooltips(btn) {
+                tooltipsEnabled = !tooltipsEnabled;
+                btn.innerHTML = "Tooltips " + (tooltipsEnabled ? "ON" : "OFF");
+                for (let i = 0; i < tooltips.length; i++) {
+                    tooltips[i].visibility = tooltipsEnabled;
+                    tooltips[i].style.display = tooltipsEnabled ? "block" : "none";
+                }
+            }
+        </script>
         
         <div class="group">
             <div class="row-scroll">
